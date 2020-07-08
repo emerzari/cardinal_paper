@@ -1,2 +1,2 @@
 # cardinal_paper
-Paper for special issue of MOOSE
+This repository contains the LaTex files for the paper for the special issue of MOOSE
