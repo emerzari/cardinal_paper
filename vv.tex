@@ -1,7 +1,7 @@
 \section{Verification and validation}
 \label{ss:c3}
 
-\subsection{Flow validation}
+\subsection{Flow and Heat Transfer verification and validation}
 
 \subsubsection{Nek5000 - Canonical cases}
 In order to verify the fluid flow model and the solution transfer we have devised two cases including a single pebble and a two pebble case. The Nek5000-MOOSE coupling was verified to yield the same results as stand-alone Nek5000 conjugate heat transfer results. We note that work in Cardinal was based on previous work conducted on Nek5000-MOOSE coupling \cite{novak2018preliminary}. Single pebble (Figure~\ref{f:vvf1}) and two pebble (Figure~\ref{f:vvf2}) cases were used to verify the solution transfer. They were also used to verify the coupling with OpenMC and BISON coupling. For instance the neutronics results showed a clear bias between pebbles and a tilt induced by the temperature gradient.
@@ -22,7 +22,7 @@ In order to verify the fluid flow model and the solution transfer we have devise
 
 Selected results from the single pebble case were also compared with results from experimental and computational studies carried out by using a similar geometry (Figure~\ref{f:vvf1}). A well quantified quantity for flow over a single-sphere is the averaged stream- wise velocity along the domain axial center line. Figure~\ref{f:vvf1} compares our result with completed numerical results. The figure shows the profile generated from DNS data in \cite{fick2017investigation} at $Re = 3,700$ and shows the downstream location ($z=D$) and magnitude of the maximum recirculation (i.e. negative streamwise) velocity for LES and DES data generated at $Re = 10,000$. One can see that for increasing Reynolds number, the magnitude of the recirculation velocity increases, while the downstream distance from the sphere where this maximum occurs, decreases. We do not quantify the specific dependence of this trend on the Reynolds number here, but our result are consistent with the literature.
 
-\subsubsection{NekRS - Canonical cases}
+\subsubsection{NekRS-BISON coupling}
 
 We have also compared directly results obtained with the NekRS version of Cardinal versus Nek5000. The case setup is identical to the one used for the verification of the MOOSE-Nek5000 coupling. Some results for the temperature distribution are shown in Figure~\ref{f:nrs1}.
 
@@ -33,7 +33,7 @@ We have also compared directly results obtained with the NekRS version of Cardin
 \label{f:nrs1}
 \end{figure}
 
-Figure~\ref{f:nrs2} presents a comparison between single pebble results in Cardinal versus results obtained in Nek5000 stand-alone with a conjugate heat transfer mesh. Temperature profiles are compared on a line at $y=0.016 m$ and $x=0 m$ (we note that the domain is centered at the pebble center and the pebble diameter is $D=0.03 m$). We note that the results are nearly identical if a quadratic representation of the surface is employed.
+Figure~\ref{f:nrs2} presents single pebble results in Cardinal,  where the fluid is simulated in NekRS and the interior of the pebble is simulated with BISON (in this case with the heat conduction module of MOOSE). Results are compared with solutions obtained with Nek5000 stand-alone, using the conjugate heat transfer feature of the code. Temperature profiles are compared on a line at $y=0.016 m$ and $x=0 m$ (we note that the domain is centered at the pebble center and the pebble diameter is $D=0.03 m$). We note that the results are nearly identical if a quadratic representation of the surface is employed.
 
 \begin{figure}[!h]
 \centering
@@ -62,7 +62,7 @@ To create a pure hexahedral mesh for a random pebble bed is very challenge if us
 \label{f:tamu4}
 \end{figure}
 
-\subsection{Neutronics validation}
+\subsection{Neutronics verification and validation}
 
 We consider a pebble bed configuration similar to the pebble experiment in Figure~\ref{f:tamu3}.
 We compare results from OpenMC versus results obtained with MCNP.
