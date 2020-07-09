@@ -8,7 +8,7 @@ To demonstrate the new capability of Cardinal we demonstrate here the use of two
 \label{ss:c4}
 
 Using the Nek5000 model of the TAMU experiment as a basis, we have developed a multi-physics simulation of a bed comprising 146 pebbles.
-The pebble model for the Nek5000 reflects the practices used for the TAMU experiment, which were validated carefully against experimental PIV data. Inlet/outlet boundary conditions are used (Figure~\ref{f:pb2}.). Unlike the TAMU experiment, here the mesh is designed to allow a clearance between pebbles. This facilitates the coupling but it will likely be updated in future simulations. The difference is outlined in Figure~\ref{f:pb2}. The mesh comprises approximately roughly 500,000 elements overall and it is designed to run at $N=5$ for coarse results and $N=7$ for finer simulations (for a max of 256 million grid points). We assume constant properties.
+The pebble model for Nek5000 reflects the practices used for the TAMU experiment, which were validated carefully against experimental PIV data. Inlet/outlet boundary conditions are used (Figure~\ref{f:pb2}). Unlike the TAMU experiment, here the mesh is designed to allow a clearance between pebbles. This facilitates the coupling but it will likely be updated in future simulations. The difference is outlined in Figure~\ref{f:pb2}. The mesh comprises approximately roughly 500,000 elements overall and it is designed to run at $N=5$ for coarse results and $N=7$ for finer simulations (for a max of 256 million grid points). We assume constant properties.
 
 \begin{figure}[!h]
 \centering
@@ -17,7 +17,7 @@ The pebble model for the Nek5000 reflects the practices used for the TAMU experi
 \label{f:pb2}
 \end{figure}
 
-To test various options and accelerate the development we defined four variants of the demo problem all available in the Cardinal repository. The variants reflect the need to define cheaper transients for testing purposes. Table~\ref{tab:nek} shows the cases: they are listed from 1 to 4 with increasing computational cost. Restarting from an advanced restart leads to faster convergence. Moreover, simulating the full Navier-stokes is considerably more expensive than assuming a "frozen velocity" and solving only the advection-diffusion equation.
+To test various options and accelerate the development we defined four variants of the demo problem all available in the Cardinal repository. The variants reflect the need to define cheaper transients for testing purposes. Table~\ref{tab:nek} shows the cases: they are listed in order of increasing computational cost. Restarting from an advanced restart leads to faster convergence. Moreover, simulating the full Navier-Stokes is considerably more expensive than assuming a ``frozen velocity'' and solving only the advection-diffusion equation.
 
 \begin{table}
   \centering
@@ -35,9 +35,9 @@ To test various options and accelerate the development we defined four variants 
   \label{tab:nek}
 \end{table}
 
-The OpenMC model is consistent with the pebble bed model discussed in the validation section. For BISON, and the demonstration problem under consideration we consider only the conduction equation and as such it is a relatively straightforward setup. Properties are constant and adapted from available correlations. The mesh for a single sphere is generated and replicated at run time. Only cell based tallies are considered for this demonstration.
+The OpenMC model is consistent with the pebble bed model discussed in the validation section. For BISON and the demonstration problem under consideration, we consider only the conduction equation and as such it is a relatively straightforward setup. Properties are constant and adapted from available correlations. The mesh for a single sphere is generated and replicated at run time. Only cell based tallies are considered for this demonstration.
 
-For the coupled simulations we opt to tightly couple Nek5000 and BISON, and loosely couple OpenMC, given that if the OpenMC is performed at every step the computational cost becomes excessive. We perform the OpenMC solve every 100 steps. The simulations are performed on 2000 processors. Snapshots of the state after an initial transient are shown in Figure~\ref{f:dtamu1} and Figure~\ref{f:dtamu2}. In particular, we observe:
+For the coupled simulations we opt to tightly couple Nek5000 and BISON, and loosely couple OpenMC, given that if OpenMC is executed at every step the computational cost becomes excessive. We perform the OpenMC solve every 100 steps. The simulations are performed on 2000 processors. Snapshots of the state after an initial transient are shown in Figure~\ref{f:dtamu1} and Figure~\ref{f:dtamu2}. In particular, we observe:
 \begin{itemize}
   \item The effect of the complex flow field on the surface temperature of the pebbles.
   \item A slight tilt in the temperature distribution in the interior of the fuel due to the outer temperature condition of each pebble.
@@ -62,24 +62,24 @@ For the coupled simulations we opt to tightly couple Nek5000 and BISON, and loos
 
 \subsubsection{Numerical Setup}
 
-The also present a case comprising 1568 pebbles. The pebble configuration has
+We also present a case comprising 1568 pebbles. The pebble configuration has
 been obtained using a discrete element method (DEM) code~\cite{projectChronoWebSite}.
-A major overhaul on the mesh generation for the fluid domain has been necessary
-to automatize as much as possible the process and reduce the number of elements
+A major overhaul on the mesh generation for the fluid domain was necessary
+to automate as much as possible the process and to reduce the number of elements
 per pebble. The new meshing tool is based on a Voronoi cell strategy.
-It has allowed to produce high quality hexahedral meshes, while reducing the mesh
-count to roughly 300-400 elements per pebble.
+It has allowed us to produce high quality hexahedral meshes while reducing the mesh
+count to roughly 300--400 elements per pebble.
 
 An example is provided in Figure~\ref{f:ndemo1} for the 1568
 pebble configuration. Higher pebble counts have a similar mesh density.
 We note that 1568 pebbles is a significant size for a coupled calculation and
-representative for instance of the SANA experiments.
+representative of the SANA experiments, for instance.
 
 The principal objective of the new meshing strategy is to reduce the
 overall element count so that higher polynomial orders (e.g., $N=7$
 to 9) may be effectively employed.   The base elements for the
 spectral element method are curvilinear hexahedral (hex) elements
-with and effective resolution of $N^3$ points for each of $E$ elements.
+with an effective resolution of $N^3$ points for each of $E$ elements.
 A minimum value of $n \approx EN^3$ is required to capture the turbulent
 thermal transport.  With a lower element count, $E$, it is possible to
 elevate the local approximation order.  $N=7$ is a nearly optimal value
@@ -133,13 +133,13 @@ includes a substantial penalty for negative Jacobians.
 \label{f:ndemo1}
 \end{figure}
 
-For this demonstrations, the sizes and composition of the TRISO particles were based on TRISO manufactured at INL, following the practice established in the validation section.. Though these particles were developed for the Advanced Gas Reactor (AGR) fuel, particles with the same specifications are used for FHR test reactors and computation benchmarks. The sizes and compositions of the pebbles were taken from the Mark-1 FHR reactor constructed at UC Berkeley. For BISON, and the demonstration problem under consideration we consider only the conduction equation and as such it is a relatively straightforward setup. Properties are constant and adapted from available correlations. The mesh for a single sphere is generated and replicated at run time. The same mesh is used for the mesh tallies in OpenMC.
+For this demonstrations, the sizes and composition of the TRISO particles were based on TRISO manufactured at INL, following the practice established in the validation section. Though these particles were developed for the Advanced Gas Reactor (AGR) fuel, particles with the same specifications are used for FHR test reactors and computation benchmarks. The sizes and compositions of the pebbles were taken from the Mark-1 FHR reactor constructed at UC Berkeley. For BISON and the demonstration problem under consideration, we consider only the conduction equation and as such it is a relatively straightforward setup. Properties are constant and adapted from available correlations. The mesh for a single sphere is generated and replicated at run time. The same mesh is used for the mesh tallies in OpenMC.
 
 \subsubsection{Results}
 
-The model described in the previous section has been run on 12 and 20 nodes of Summit, with 6 MPI ranks on each node, corresponding to the 6 GPU on each node. The OpenMC and BISON models are designed to run on CPU while the NekRS model runs on the GPU. Stand-alone NekRS simulations have been run first up to 25 convective time units to develop turbulence - Figure~\ref{f:ndemo3} using a Large Eddy Simulation (LES) approach.
+The model described in the previous section has been run on 12 and 20 nodes of Summit, with 6 MPI ranks on each node, corresponding to the 6 GPUs on each node. The OpenMC and BISON models are designed to run on CPU while the NekRS model runs on the GPU. Stand-alone NekRS simulations have been run first up to 25 convective time units to develop turbulence, the results of which are shown in Figure~\ref{f:ndemo3} using a Large Eddy Simulation (LES) approach.
 
-A restart file has then been generated and used to restart a transient simulation in Cardinal representing an heat-up of the pebbles. The time step has been fixed to $5(10^{-4})$s in both BISON and NekRS. The temperature at time zero has been set to 300 C everywhere. Figure~\ref{f:ndemo4} presents the temperature at the surface of the pebbles in BISON at three points in time. The simulations took 2.5s per coupled time step on 20 nodes, requiring transfer between physics at each time step. However this could be greatly optimized by relaxing the requirement, as data transfer from GPU to CPU should be minimized as much as possible.
+A restart file has then been generated and used to restart a transient simulation in Cardinal representing heat-up of the pebbles. The time step has been fixed to $5\times 10^{-4}$ s in both BISON and NekRS. The temperature at time zero has been set to 300 $^{\circ}$C everywhere. Figure~\ref{f:ndemo4} presents the temperature at the surface of the pebbles in BISON at three points in time. The simulations took 2.5 s per coupled time step on 20 nodes, requiring transfer between physics at each time step. However this could be greatly optimized by relaxing the requirement, as data transfer from GPU to CPU should be minimized as much as possible.
 
 \begin{figure}[!h]
 \centering
@@ -157,14 +157,14 @@ A restart file has then been generated and used to restart a transient simulatio
 \end{figure}
 
 The results of OpenMC simulations coupled with the heat conduction module are
-shown in Figures ~\ref{f:1568_openmc_heat_source} and
+shown in Figures~\ref{f:1568_openmc_heat_source} and
 ~\ref{f:1568_openmc_temperatures} with the same time step parameters as the
 NekRS simulations described above. An eigenvalue simulation using 150 batches
 with 50 inactive batches was executed in each time step. 50,000 particles per
 batch were used to converge the pebble-averaged heat source from the OpenMC cell
 tally while the unstructured mesh heat source tally required 500,000 particles
 per batch to produce the heat source presented here. Production simulations may
-require a an even higher number of particles per batch to more tightly converge
+require an even higher number of particles per batch to more tightly converge
 the heating distribution when using the unstructured mesh heat source due to the
 decreased number of samples per source particle in the tally bins.
 Figure~\ref{f:1568_openmc_temperatures_single_pebble} demonstrates the effect of
