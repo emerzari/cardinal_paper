@@ -1,0 +1,157 @@
+\documentclass[11pt,letterpaper,english]{article}
+
+% Page design
+\usepackage[top=1in, bottom=1in, left=1in, right=1in] {geometry}
+\pagestyle{empty}
+
+% General packages
+\usepackage[T1]{fontenc}
+%\usepackage{txfonts}
+\usepackage{xcolor}
+%\usepackage{eqnarray}
+\usepackage{epsfig}
+\usepackage{epstopdf}
+\usepackage{graphicx}
+\usepackage{mathptmx}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{setspace}
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{floatrow}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{hhline}
+\setlength\doublerulesep{.7pt}
+%\usepackage{tabularx}
+\usepackage{subcaption}
+
+%\usepackage{csmacros}
+\usepackage{dsfont}
+%\input{csvers.tex}
+
+% Section format
+\usepackage{sectsty}
+\sectionfont{\normalsize}
+\subsectionfont{\normalsize}
+\subsubsectionfont{\normalsize \it}
+\usepackage{titlesec}
+\setlength{\parskip}{\baselineskip}
+\setlength{\parindent}{0pt}
+
+\titlespacing\section{0pt}{0\parskip}{0\parskip}
+\titlespacing\subsection{0pt}{0\parskip}{0\parskip}
+\titlespacing\subsubsection{0pt}{0\parskip}{0\parskip}
+\titleformat{\section}[block]{\normalfont\normalsize\bfseries}{\thesection .}{1em}{}
+\titleformat{\subsection}[block]{\normalfont\normalsize\bfseries}{\thesubsection .}{1em}{}
+\titleformat{\subsubsection}[block]{\normalfont\normalsize\bfseries}{\thesubsubsection .}{1em}{}
+
+% Bibliography format
+
+\usepackage[hidelinks]{hyperref}
+\usepackage[numbers]{natbib}
+\usepackage{doi}
+\renewcommand{\refname}{REFERENCES}
+\makeatletter
+\renewcommand\@biblabel[1]{#1.\em}
+\makeatother
+\setlength{\bibsep}{0pt plus 0.3ex}
+
+% Captions
+\usepackage{caption}
+\captionsetup[figure]{labelfont={bf,normalsize},textfont={bf,normalsize},labelformat={default},labelsep=period,name={Figure}}
+
+% Tables
+\floatsetup[table]{capposition=top}
+\captionsetup[table]{labelfont={bf,normalsize},textfont={bf,normalsize},labelformat={default},labelsep=period,name={Table}}
+\renewcommand{\thetable}{\Roman{table}}
+\captionsetup[sub]{font={normalsize},labelfont={bf,normalsize}}
+
+% UDF
+\definecolor{brown}{RGB}{74,68,42}
+\newcommand{\tw}[1]{#1\textwidth}
+\newcommand{\lw}{\linewidth}
+\renewcommand{\eqref}[1]{(\ref{#1})}
+
+\raggedright
+
+\begin{document}
+\vspace*{-0.45in}
+\begin{center}
+{\Large\centering\bf CARDINAL: A MULTIPHYSICS SIMULATOR FOR PEBBLE BED REACTORS}
+
+\vspace{3pt}
+
+{\bf \large Elia Merzari} \\
+\large Pennsylvania State University \\
+\large 228 Hallowell, University Park, PA, USA \\
+{\color{brown} ebm5351@psu.edu} \\
+
+\vspace{0.25in}
+
+{\bf \large Haomin Yuan, Paul Fischer, Misun Min, Dillon Shaver,} \\
+{\bf \large Ronald Rahaman, Patrick Shriwise, Paul Romano } \\
+{\bf \large Alberto Talamo, Yu-Hsinag Lan } \\
+\large Argonne National Laboratory \\
+\\
+\vspace{0.45in}
+\\
+{\bf \large Derek Gaston, Richard Martineau \\
+\large Idaho National Laboratory \\
+ \\
+\vspace{0.45in}
+ \\
+{\bf \large  Yassin Hassan } \\
+\large Texas A&M University \\
+
+
+\end{center}
+
+
+
+\normalsize
+
+\section*{ABSTRACT}
+
+
+In this article we demonstrate a multi-physics solver for pebble bed reactors and in particular for  the Berkley's PB-FHR (Fluoride Cooled High Temperature Reactors) Mark-I design. The
+Fluoride salt cooled High temperature Reactor (FHR) is a class of advanced nuclear reactors that combine the
+robust coated particle fuel form from high temperature gas cooled reactors, direct reactor auxiliary cooling
+system (DRACS) passive decay removal of liquid metal fast reactors, and the transparent, high volumetric heat capacitance liquid Fluoride salt working fluids - Flibe - from molten salt reactors. This combination of fuel and coolant enables FHRs to operate in a high-temperature low-pressure design space that has beneficial safety and economic implications. The PB-FHR reactor relies on a pebble bed approach and pebble bed reactors are in a sense the poster child for multiscale analysis.
+
+Relying heavily on MOOSE's MultiApp capability we have developed Cardinal, a new tool platform for lower length-scale simulation for pebble bed cores. The lower length-scale simulator comprises three physics: neutronics (OpenMC), thermal-fluids (Nek5000/NekRS) and fuel performance (BISON).   Cardinal tightly couples all three physics and leverages advances in MOOSE such as the MultiApp system and the concept of MOOSE-wrapped Apps. Moreover Cardinal can run part of the physics on  GPUs. In this manuscript we discuss the development of Cardinal, verification and validation and demonstration simulations.
+
+\begin{flushright}
+{\bf KEYWORDS} \\
+Pebble Bed, FHR, Multi-physics
+\end{flushright}
+
+\doublespacing
+
+\input intro
+\input cardinal
+\input vv
+\input demo
+\input concl
+
+
+%\bibliographystyle{ieeetr}
+\bibliographystyle{nureth18new}
+%\bibliographystyle{ans}
+%\bibliographystyle{plainnat}
+%\bibliographystyle{abbrv}
+\bibliography{references}
+%\bibliographystyle{abbrv}
+
+\begin{center}
+\scriptsize
+\framebox{\parbox{2.6in}{The submitted manuscript has been created by UChicago Argonne, LLC, Operator of Argonne National Laboratory
+("Argonne").  Argonne, a U.S. Department of Energy Office of Science laboratory, is operated under Contract No. DE-AC02-06CH11357.  The U.S. Government retains for itself, and others acting on its behalf, a paid-up, nonexclusive, irrevocable worldwide license in said article to reproduce, prepare derivative works, distribute copies to the public, and perform publicly and display publicly, by or on behalf of the Government.}}
+\normalsize
+\end{center}
+
+
+\end{document}

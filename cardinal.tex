@@ -1,0 +1,211 @@
+\section{Cardinal}
+\label{s:cardinal}
+
+MOOSE was originally developed for solving fully coupled systems of partial differential equations (PDEs) using fully implicit timestepping. To utilize MOOSE developers create small C++ objects which represent their partial differential equations, boundary conditions, initial conditions, etc. MOOSE will then coordinate PETSc and libMesh to perform a Newton solve over all of the physics to find the solution to the multiphysics problem. While this is still the primary way to use MOOSE, the library has also gained capability for loosely coupled solves, Picard iteration and even coupling to external applications (such as OpenMC and Nek5000). Discussion on the MultiApp features of MOOSE used in Cardinal are provided in this section. When utilizing MOOSE to couple multiple disparate codes together a new MOOSE-based application was created \cite{cardinal}  which compiles all of the codes into one executable. For the previous study that code was  named Cardinal and combines BISON, OpenMC and Nek5000 to achieve high-fidelity simulation of FHR reactors.
+
+\subsection{MOOSE Coupling Capability}
+
+The MultiApp system within MOOSE allows for arbritrary depth hierarchical execution of applications in parallel \cite{gaston2015physics}. As pictorialized in Figure \ref{f:moose1} a MultiApp solve will always have a master application. Underneath that master application can be an arbitrary number of MultiApp objects. The MultiApp objects are containers of instances of applications and can have many instances of that application. As an example, the master application might be a neutron transport simulator for lightwater reactors and then it could have one MultiApp representing the fuel rods with that MultiApp having many (thousands) of instances of a fuel performance simulation tool, one for each fuel rod. Each sub-app can, itself, also have any number of MultiApps: leading to an arbitrarily deep tree of applications. These application instances are spread out in parallel and all sub-apps within an individual MultiApp are executed simultaneously (given enough computing resources).
+
+\begin{figure}[!h]
+\centering
+\includegraphics[clip=true,width=0.9\textwidth]{Figures/moose1}
+\caption{MultiApp structure.}
+\label{f:moose1}
+\end{figure}
+
+
+Critical to Cardinal is that a MultiApp can hold non-MOOSE-based ("external") applications. This is possible using the Moose-Wrapped-App (MWA) interfaces. By creating a few objects that wrap an external app and present it to MOOSE as a MOOSE-based application that external application can then be placed into any point in the hierarchy. For the current effort OpenMC and Nek5000 were both wrapped in the MWA interfaces, allowing them to participate in a MultiApp solve. For each application the following interfaces were developed:
+\begin{itemize}
+    \item \textit{ExternalApp}: Derives from MooseAppBase and is the basic wrapper to the the code the MultiApp
+    system needs.
+    \item \textit{ExternalProblem}: Derives from Problem to implement solve() that calls the external code and create
+    dataelds.
+    \item \textit{ExternalMesh}: Derives from MooseMesh to create a mesh that is compatible with the external app.
+\end{itemize}
+While MultiApps create trees of executing applications, Transfers are needed move data between them. Transfers move data only vertically, up and down the hierarchy of applications. Many different types of transfers exist including:
+\begin{itemize}
+  \item Interpolation
+  \item Projection
+  \item Evaluation
+  \item Data-copy
+  \item Postprocessor transfer
+  \item Scalar Variable transfer
+\end{itemize}
+Transfers are the difficult part, especially considering setting up them correctly in parallel. To combat this, the MWA system utilizes an ExternalMesh that is created to be compatible with the third party application. Fields/values can then be easily moved to the ExternalProblem (fields) that uses the ExternalMesh. Built-in MOOSE Transfers can be used to communicate those values with any other MOOSE/Non-MOOSE application in the MultiApp hierarchy. A schematic describing the solution transfer is shown in Figure~\ref{f:moose2}.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[clip=true,width=0.9\textwidth]{Figures/moose2}
+\caption{Solution transfer.}
+\label{f:moose2}
+\end{figure}
+
+Finally MOOSE provides the ability to solve for coupled physics in three primary ways:
+\begin{itemize}
+\item Loosely-Coupled: each physics solved with a separate linear/nonlinear solve. Data exchange once per
+timestep (typically).
+\item Tightly-Coupled / Picard: each physics solved with a separate linear/nonlinear solve. Data is exchanged
+and phsyics re-solved until convergence.
+\item Fully-Coupled: all physics solved for in one linear/nonlinear solve.
+\end{itemize}
+These three options are depicted in Figure~\ref{f:moose3}. The top coupling represents a one-way, loose coupling where each timestep one physics is solved and the solution is passed to the next physics solver. The second physics is then solved and time marches forward. The second coupling utilizes Picard iteration to converge the two physics within each timestep. The final coupling method, the one originally utilized by MOOSE, is full coupling: all PDEs within the system are solved simultaneously, resulting in a completely converged solution within one solve. While fully coupled simulation has many advantages when physics are inter-dependent, it can be
+overly burdensome for more loosely-coupled physical systems. Therefore, utilization of the MultiApp and Transfer systems for loose-coupling and Picard iteration can be useful for multiscale solves, solves involving multiple timescales and solves utilizing external applications. The Cardinal application developed for lower length scale simulation of FHRs utilizes MultiApps for just this purpose: coupling Nek5000, OpenMC and BISON.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[clip=true,width=0.9\textwidth]{Figures/moose3}
+\caption{MOOSE coupling strategies. Top: loose, Middle: Picard, Bottom: full.}
+\label{f:moose3}
+\end{figure}
+
+\subsection{Design of Cardinal}
+\label{ss:c1}
+
+Cardinal utilizes the MOOSE MultiApp capability to place each of the applications to be coupled within a hierarchical tree-based structure as shown in \ref{f:cardinal}. This structure was chosen based on how tightly coupled the physics are. BISON and Nek5000 form one branch due to the instantaneous feedback between the conjugate heat transfer and the pebble temperature. The Nek5000 solution provides the temperature boundary condition on the exterior of each pebble while BISON returns the heat  flux at each point around the pebble to Nek5000. Another benefit of having BISON and Nek5000 on their own branch is the way it impacts timestepping. Within the MultiApp setup shown in Figure \ref{f:cardinal} the branch containing BISON and Nek5000 can take many small timesteps, and even iterate between BISON and Nek5000 within a timestep, without needing to re-solve OpenMC. This greatly increases the runtime speed of the application. OpenMC is then separate from the other two. It receives fuel/pebble temperatures from BISON and returns a heat source which is transferred down to BISON. OpenMC is currently solving for steady state neutronics and can therefore take larger timesteps compared to BISON and Nek5000 (which are both performing transient heat conduction and CFD solves respectively). The flexibility of the MOOSE MultiApp system allows for just such a setup.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[clip=true,width=0.9\textwidth]{Figures/cardinal}
+\caption{Diagram showing the design of Cardinal.}
+\label{f:cardinal}
+\end{figure}
+
+
+\subsubsection{Build system}
+\label{ss:c2}
+
+In any multiphysics coupling project with a large number of dependent libraries, ensuring consistent compilation and linking can be a challenge. Throughout Cardinal, we rely on PETSc to detect system-dependent configuration information and to install as many third-party libraries as possible (Figure~\ref{f:build}). BISON, MOOSE, and libMesh already rely on PETSc, and they are built as usual. For standalone OpenMC and
+Nek5000, PETSc is not a dependency; but in Cardinal, OpenMC and Nek5000 use PETSc for two purposes:
+\begin{itemize}
+\item PETSc is used to install HDF5 and BLAS/LAPACK, which are dependencies of OpenMC and Nek5000.
+\item The configuration info discovered by PETSc is passed to the build systems of OpenMC and Nek5000.
+\end{itemize}
+This is done through header files that PETSc generates specifically for this purpose. Hence, after installing PETSc and libMesh, Cardinal can be built in one step.
+We have added a branch of the repository that compiles NekRS instead of Nek5000. The build system also allows Cardinal to run on the ORNL supercomputer Summit.
+\begin{figure}[!h]
+\centering
+\includegraphics[clip=true,width=0.9\textwidth]{Figures/build}
+\caption{Diagram describing the build system of Cardinal.}
+\label{f:build}
+\end{figure}
+
+\subsubsection{Nek5000/NekRS and API}
+
+Nek5000 \cite{fischer2015nek5000} is an open-source simulation-software package that delivers highly accurate solutions for a wide range of scientific applications including
+fluid flow, thermal convection, combustion, and magnetohydrodynamics. It features state-of-the-art, scalable, high-order algorithms that are fast and efficient on platforms ranging from laptops to the DOE leadership computing facilities.
+
+In Nek5000 the domain is decomposed globally into smaller domains (elements), which are assumed
+to be curvilinear hexahedra (brick meshes) that conform to the domain boundaries. Locally, functions within
+each element are expanded according to a polynomial expansion and operators are cast in tensor-product
+form. The pressure can be solved at the same polynomial order of the velocity $N$ ($P_{N} - P_{N}$ formulation)
+or at lower order $N-2$ ($P_{N} - P_{N-2}$ formulation). We note that Nek5000 employs only pure hexahedral
+non-conformal meshes. While this somewhat limits the application of the code, recent advances have allowed
+to apply Nek5000 to very complex geometries using a \textit{tex-to-hex} technique \cite{yuan2020spectral}.
+Temporal discretization is based on a high-order splitting that is third-order accurate in time and
+reduces the coupled velocity-pressure Stokes problem to four independent solves per timestep: one for each
+velocity component and one for the pressure. The velocity problems are diagonally dominant and thus easily
+solved by using Jacobi preconditioned conjugate gradient iteration. Two time-stepping schemes, both up to
+third order, are available: BDF and OIFS - \cite{fischer2003implementation}. The pressure substep requires a Poisson solver at each step,
+which is performed through multigrid -preconditioned GMRES iteration coupled with temporal projection to find an optimal initial guess.
+
+Particularly important components of Nek5000 are its scalable coarse-grid solvers that are central to
+parallel performance. For both weak scaling and strong scaling using Algebraic Multi Grid (AMG) for the
+coarse-grid solve is essential above 250,000 elements. Nek5000 employs a pure MPI parallel implementation.
+An extensive discussion of the scalability of Nek5000 is provided in \cite{offermans2016strong}.
+
+All pebble bed simulations performed here use either large eddy simulation (LES), using an explicit filter \cite{fischer2001filter}, or Direct Numerical Simulation (DNS).
+
+The coupling for Nek5000 to MOOSE is rather simple:
+\begin{itemize}
+\item A point cloud with the GLL points corresponding to the surface mesh (corresponding to either $N = 2$ or $N = 1$) is defined. The points are used by MOOSE to define a mapping.
+\item A set of routines are then defined for solution transfer. The temperature is extracted on the Nek5000 mesh and loaded onto the points cloud in MOOSE.
+\item The flux data is loaded from the points cloud and  used to reconstruct an arbitrary order $N$ surface field for the heat
+flux.
+\item Finally a set of routines for time stepping are defined.
+\end{itemize}
+We note that even with a relatively large problem like the demo problem discussed in this report, the memory footprint and computational cost of the solution transfer is not significant compared to the physics solves.
+
+Cardinal also interfaces to NekRS, a new GPU-oriented version of Nek5000. NekRS is also capable of running on CPUs. It represents a significant redesign of the code, with major differences. It is primarily written in C++, but it also links to Nek5000 as a library for pre-processing and post-processing. It has been built primarily under the auspices of the Exascale Computing Program. It is able to reach excellent weak scaling performance. Details of NekRS performance for nuclear applications are provided in recent publications \cite{merzari2020toward}. The Cardinal API of NekRS uses heavily the Cardinal API of Nek5000 and yields identical results.
+
+
+\subsubsection{OpenMC and API}
+
+OpenMC \cite{romano2013openmc} is a Monte Carlo particle transport simulation code focused on neutron criticality calculations. It is
+capable of simulating 3D models based on constructive solid geometry with second-order surfaces. OpenMC
+supports either continuous-energy or multi-group transport. The continuous-energy particle interaction data
+is based on a native HDF5 format that can be generated from ACE files used by the MCNP and Serpent
+Monte Carlo codes. Additionally, OpenMC can use multipole cross-section data for temperature feedback
+calculations (as in Cardinal).
+
+For Cardinal, we use the C API of OpenMC to start and stop the simulation at various levels (including the overall
+simulation and individual batches) and for accessing underlying data structures (such as cell, material, and
+tally data) during online coupling.
+
+Like several other MC transport simulations (such as MCNP), OpenMC uses constructive solid geometry (CSG) to build models in Euclidean space.
+Volumes called half-spaces are bounded by quadratic surfaces, which are defined by parameterized equations, not gridpoints. A given surface defines a positive and negative half-space, and boolean combinations (intersections, unions, and differences) of these half-spaces can form arbitrarily complex volumes. In OpenMC, a boolean combination of arbitrarily-many half spaces describes a volume called a cell. Moreover, In OpenMC, each cell contains one or more materials; each material, in turn, contains information about nuclide identities, nuclide atom densities, and overall material density. Each cell also contains temperature information; note that temperature information is not associated with the material itself.
+
+There have been previous efforts coupling OpenMC to MOOSE for LWR applications \cite{ellis2017preliminary}.
+However, the current effort takes a new approach. In particular we have implemented two options:
+\begin{itemize}
+    \item \textbf{A cell-based API.}.  We leverage MOOSE-Wrapped-Apps features to develop a specialized interface for the PBR problem,. To transfer temperature from BISON to OpenMC, we must update the temperature of an OpenMC cell, which in turn updates the temperature of each material in the cell. Heat sources are also tallied on each pebble and transferred to BISON.
+    \item \textbf{A mesh-tally API}.
+\end{itemize}
+
+In the following we discuss in more detail the mesh-tally API.
+
+To capture heat generation in the OpenMC simulation, a tally scoring the amount of total recoverable fission energy per source particle is applied to the outer cell of each pebble in the bed. These tallies are created at runtime during the problem setup by using a list of pebble centers to locate the uppermost cell in the CSG geometry hierarchy containing that point.
+
+As summarized in \autoref{eq:heat_source_normalization}, the energy deposition for each pebble, $\hat{q}_{i}$, is normalized by the total energy deposition in the bed and multiplied by the the total thermal power of the reactor, $Q$ to obtain a an average heat generation rate for each pebble, $q_i$. This value is then divided by the volume of each pebble, $V_p$, to obtain a volumetric heat generation rate, $q'''_i$.
+
+\begin{equation}
+    \label{eq:heat_source_normalization}
+    q'''_i = \frac{Q q_i}{V_{p}\sum_{i}{\hat{q_i}}} = \frac{[W][J/source]}{[cm^{3}] [J/source]} = \frac{[W]}{[cm^{3}]}
+\end{equation}
+
+This results in a single average heating value for the entire pebble. Before being transferred to the MOOSE mesh, these values are normalized by the total heat
+
+For improved spatial resolution of heat generation in the pebble bed, unstructured mesh tallies have been implemented in OpenMC. \autoref{fig:pebble_umesh} provides an example of this capability applied to a single pebble. The unstructured mesh representation relies on a LibMesh mesh instance and currently conforms to the OpenMC model in which the mesh structure and tally data are separated. The separation of this information allows the unstructured mesh to be applied in a mesh filter without knowledge of the underlying mesh type. The mesh filter can then be used in one or more tallies in combination with other specified filters, scores, and nuclides to form a tally. Calls into the LibMesh library from OpenMC are agnostic to the type of elements being used, so meshes can be formed using any element type supported by LibMesh.
+
+\begin{figure}
+    \centering
+    \raisebox{-0.5\height}{\includegraphics[width=0.5\textwidth]{Figures/pebble_cutaway}}
+    \hspace*{.2in}
+    \raisebox{-0.5\height}{\includegraphics[width=0.365\textwidth]{Figures/umesh_ex}}
+    \caption{Qualitative view of a heating tally on an unstructured mesh. Left: Cut-away of the pebble geometry as represented in OpenMC. Right: Result of an applied heating tally where heating only occurs in the region of the pebble containing TRISO particles.}
+    \label{fig:pebble_umesh}
+\end{figure}
+
+A mesh for each pebble is applied in the Cardinal problem to capture the heat generation distribution throughout the pebble bed. To avoid replicating a mesh representing all of the pebbles from either MOOSE or NEKRS, an option for adding translations to mesh filters was introduced in OpenMC. Placing the translation at this layer of the tally structure allows all tallies to rely on a single LibMesh mesh  instance acting as a template for a single pebble as shown in \autoref{fig:umesh_tally_steup}. This results in a very low memory footprint for the tally, even when extended to an entire pebble bed.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/umesh_tally_diagram}
+    \caption{Organization of unstructured mesh tallies for heat generation in OpenMC.}
+    \label{fig:umesh_tally_steup}
+\end{figure}
+
+The translation values for each mesh filter are set using the list of pebble centers provided in the MOOSE input file. During problem initialization, these translations are used to adjust the location of element centers in the mesh template when transferring heat generation value to MOOSE.
+% Element volumes can be determined directly from the
+As the only additional input information required for the unstructured mesh tallies is the specification of a mesh template input file, the unstructured mesh tallies can be specified at runtime by setting the appropriate tally type parameter in the OpenMC MOOSE input file.
+
+Temperature values from MOOSE are updated in OpenMC using an average temperature value at the pebble center. To simplify the process of updating the temperature of all cells inside the pebble, an option has been added in OpenMC to propagate a temperature value into all cells filled by a material if the cell whose property is being updated contains a universe or lattice.
+
+\subsubsection{BISON}
+
+BISON is a MOOSE-based \cite{hales2013triso} nuclear fuel simulation tool primarily developed at Idaho National Laboratory.
+BISON is capable of performing high-
+fidelity, finite-element, simulation of various fuel forms including,
+light-water reactor fuel rods, TRISO fuel particles, and plate fuel. MOOSE allows BISON to solve for many
+coupled physics including heat-conduction, solid-mechanics, burnup, material evolution, plasticity, creep,
+fracture, fission gas buildup, gap heat conduction and neutron embrittlement. In addition, BISON uses
+MOOSE to perform these coupled simulations within an implicit solution scheme allowing for long timesteps
+and high-order time integration necessary for simulation of operating reactors.
+
+BISON is a high-fidelity tool that has been developed to achieve predictive capability. It has undergone
+rigorous assessment testing and verification analysis to ensure accurate simulation. Further, BISON is
+developed using a rigorous V&V plan. This is in addition to building on a high pedigree of software quality
+practices employed by the MOOSE Framework itself which satisfy the United States NQA1 software quality
+requirements.
+
+Since BISON is a native MOOSE tool there is no need for an API.
