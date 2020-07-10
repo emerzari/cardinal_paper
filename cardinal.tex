@@ -19,8 +19,7 @@ Critical to Cardinal is that a MultiApp can hold non-MOOSE-based (``external'') 
 \begin{itemize}
     \item \textit{ExternalApp}: Derives from MooseAppBase and is the basic wrapper to the code the MultiApp
     system needs.
-    \item \textit{ExternalProblem}: Derives from Problem to implement solve(), which calls the external code and creates
-    data fields.
+    \item \textit{ExternalProblem}: Derives from Problem to implement solve(), which calls the external code and creates data fields.
     \item \textit{ExternalMesh}: Derives from MooseMesh to create a mesh that is compatible with the external app.
 \end{itemize}
 While MultiApps create trees of executing applications, Transfers are needed to move data between them. Transfers move data only vertically, up and down the hierarchy of applications. Many different types of transfers exist, including:
@@ -32,7 +31,7 @@ While MultiApps create trees of executing applications, Transfers are needed to 
   \item Postprocessor transfer
   \item Scalar Variable transfer
 \end{itemize}
-Transfers are the difficult part, especially considering how to set them up correctly in parallel. The MWA system utilizes an ExternalMesh that is created to be compatible with the third-party application to address this. Fields/values can then be easily moved to the ExternalProblem (fields) that uses the ExternalMesh. Built-in MOOSE Transfers can communicate those values with any other MOOSE/non-MOOSE application in the MultiApp hierarchy. A schematic describing the solution transfer is shown in Figure~\ref{f:moose2}.
+Transfers are the difficult part, especially considering how to set them up correctly in parallel. The MWA system utilizes an ExternalMesh that is created to be compatible with the third-party application to address this. Fields/values can then be easily moved to the ExternalProblem (fields) that uses the ExternalMesh. Built-in MOOSE Transfers can communicate those values with any other MOOSE/non-MOOSE application in the MultiApp hierarchy. A schematic describing the solution transfer is shown in Figure~\ref{f:moose2}.
 
 \begin{figure}[!h]
 \centering
@@ -69,7 +68,6 @@ Cardinal utilizes the MOOSE MultiApp capability to place each of the application
 \caption{Diagram showing the design of Cardinal.}
 \label{f:cardinal}
 \end{figure}
-
 
 \subsubsection{Build system}
 \label{ss:c2}
