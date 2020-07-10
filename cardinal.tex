@@ -150,7 +150,7 @@ However, the current effort takes a new approach. In particular, we have impleme
 
 In the following, we discuss in more detail the mesh-tally API. To capture heat generation in the OpenMC simulation, a tally scoring total recoverable fission energy per source particle is applied to each pebble's outer cell in the bed. These tallies are created at runtime during the problem setup by using a list of pebble centers to locate the uppermost cell in the CSG geometry hierarchy containing that point.
 
-As summarized in \autoref{eq:heat_source_normalization}, the energy deposition for each pebble, $\hat{q}_{i}$, is normalized by the total energy deposition in the bed.  It is then multiplied by the total thermal power of the reactor, $Q$, to obtain an average heat generation rate for each pebble, $q_i$. This value is then divided by the volume of each pebble, $V_p$, to obtain a volumetric heat generation rate, $q'''_i$.
+As summarized in \autoref{eq:heat_source_normalization}, the energy deposition for each pebble, $\hat{q}_{i}$, is normalized by the total energy deposition in the bed.  This value is then multiplied by the total thermal power of the reactor, $Q$, to obtain an average heat generation rate for each pebble, $q_i$ and divided by the volume of each pebble, $V_p$, to obtain a volumetric heat generation rate, $q'''_i$.
 
 \begin{equation}
     \label{eq:heat_source_normalization}
@@ -159,7 +159,7 @@ As summarized in \autoref{eq:heat_source_normalization}, the energy deposition f
 
 This results in a single average heating value for the entire pebble. Before being transferred to the MOOSE mesh, these values are normalized by the total heat.
 
-For improved spatial resolution of heat generation in the pebble bed, unstructured mesh tallies have been implemented in OpenMC. \autoref{fig:pebble_umesh} provides an example of this capability applied to a single pebble. The unstructured mesh representation relies on a LibMesh mesh instance and currently conforms to the OpenMC model in which the mesh structure and tally data are separated. The separation of this information allows the unstructured mesh to be applied in a mesh filter without knowing the underlying mesh type. The mesh filter can then be used in one or more tallies combined with other specified filters, scores, and nuclides to form a tally. Calls into the LibMesh library from OpenMC are agnostic to the type of elements used, so meshes can be formed using any element type supported by LibMesh.
+For improved spatial resolution of heat generation in the pebble bed, unstructured mesh tallies have been implemented in OpenMC. \autoref{fig:pebble_umesh} provides an example of this capability applied to a single pebble. The unstructured mesh representation relies on a LibMesh mesh instance and currently conforms to the OpenMC tally data model that separates the mesh structured from the tally data itself. The separation of this information allows the unstructured mesh to be applied in a mesh filter object which is agnostic to the underlying mesh type. The mesh filter can then be combined with other specified filters, scores, and nuclides in a tally and can be used in one or more tally definitions. Calls into the LibMesh library from OpenMC are agnostic to the type of elements used, so meshes can be formed using any element type supported by LibMesh.
 
 \begin{figure}
     \centering
@@ -170,7 +170,7 @@ For improved spatial resolution of heat generation in the pebble bed, unstructur
     \label{fig:pebble_umesh}
 \end{figure}
 
-A mesh for each pebble is applied in the Cardinal problem to capture the heat generation distribution throughout the pebble bed. To avoid replicating a mesh representing all of the pebbles from either MOOSE or NekRS, adding translations to mesh filters was introduced in OpenMC. Placing the translation at this layer of the tally structure allows all tallies to rely on a single LibMesh mesh instance acting as a template for a single pebble, as shown in \autoref{fig:umesh_tally_steup}. This results in a minimal memory footprint for the tally, even when extended to an entire pebble bed.
+A mesh for each pebble is applied in the Cardinal problem to capture the heat generation distribution throughout the pebble bed. To avoid replicating a mesh representing all of the pebbles from either MOOSE or NekRS, the addition of translations to mesh filters was introduced in OpenMC. Placing the translation at this layer of the tally model allows all tallies to rely on a single LibMesh mesh instance acting as a template to represent any pebble in the bed, as shown in \autoref{fig:umesh_tally_steup}. This results in a minimal memory footprint for the tally, even tallying energy deposition for an entire pebble bed.
 
 \begin{figure}[ht]
     \centering
@@ -179,11 +179,10 @@ A mesh for each pebble is applied in the Cardinal problem to capture the heat ge
     \label{fig:umesh_tally_steup}
 \end{figure}
 
-The translation values for each mesh filter are set using the list of pebble centers provided in the MOOSE input file. During problem initialization, these translations are used to calculate the location of element centers in the mesh template when transferring heat generation value to MOOSE.
+The translation values for each mesh filter are set using the list of pebble centers provided in the MOOSE input file. During problem initialization, these translations are used to calculate the location of element centers in the MOOSE mesh when transferring heat generation values to MOOSE.
 % Element volumes can be determined directly from the
-As the only additional input information required for the unstructured mesh tallies is the specification of a mesh template input file, the unstructured mesh tallies can be specified at runtime by setting the appropriate tally type parameter in the OpenMC MOOSE input file.
 
-Temperature values from MOOSE are updated in OpenMC using an average temperature value at the pebble center. To simplify the process of updating cell temperatures inside the pebble, an option has been added in OpenMC to propagate a temperature value into all cells filled by a material if the cell whose property is updated contains a universe or lattice.
+Temperature values from MOOSE are updated in OpenMC using an average temperature value at the pebble center. An option has been added in OpenMC to automatically update the temperature value of all cells inside a pebble to simplify this process.
 
 \subsubsection{BISON}
 
