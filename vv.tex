@@ -169,7 +169,7 @@ test reactors and computations benchmarks \cite{charalampos2014}.  The pebbles' 
   \label{tab:pebble_dims}
 \end{table}
 
-The resultant OpenMC model is shown in Figure~\ref{f:openmc_pebble}; the figure shows a close-up of a 2D slice of one pebble.  In this demo, the TRISO particles are packed in a regular, square lattice with the same overall packing fraction described by \cite{phillips2010}, rather than a randomized and/or irregular distribution.  This choice was made for computational efficiency since OpenMC can apply optimizations for particle (i.e., neutron) tracking in a regular lattice.  Some optimization methods have been developed specifically for building models with TRISO particles \cite{openmcdocs_triso}, and these will be used for future demonstrations.
+The resultant OpenMC model is shown in the left image of Figure~\ref{f:openmc_pebble}.  In this demo, the TRISO particles are packed in a regular, square lattice with the same overall packing fraction described by \cite{phillips2010}, rather than a randomized and/or irregular distribution.  This choice was made to simplify the direct code-to-code comparison. Some optimization methods specifically for generation of randomly distributed TRISO particles are available in OpenMC \cite{openmcdocs_triso} and can be optionally applied in the Cardinal demonstration simluations discussed below.
 
 \begin{figure}[!h]
 \centering
