@@ -31,7 +31,7 @@ While MultiApps create trees of executing applications, Transfers are needed to 
   \item Postprocessor transfer
   \item Scalar Variable transfer
 \end{itemize}
-Transfers are the difficult part, especially considering how to set them up correctly in parallel. The MWA system utilizes an ExternalMesh that is created to be compatible with the third-party application to address this. Fields/values can then be easily moved to the ExternalProblem (fields) that uses the ExternalMesh. Built-in MOOSE Transfers can communicate those values with any other MOOSE/non-MOOSE application in the MultiApp hierarchy. A schematic describing the solution transfer is shown in Figure~\ref{f:moose2}.
+Consistent data transfers between dissimilar applications pose challenges for massively parallel code execution.  The MWA system utilizes an ExternalMesh that is created to be compatible with the third-party application to address this. Fields/values can then be easily moved to the ExternalProblem (fields) that uses the ExternalMesh. Built-in MOOSE Transfers can communicate those values with any other MOOSE/non-MOOSE application in the MultiApp hierarchy. A schematic describing the solution transfer is shown in Figure~\ref{f:moose2}.
 
 \begin{figure}[!h]
 \centering
@@ -148,9 +148,7 @@ However, the current effort takes a new approach. In particular, we have impleme
     \item \textbf{A mesh-tally API}.
 \end{itemize}
 
-In the following, we discuss in more detail the mesh-tally API.
-
-To capture heat generation in the OpenMC simulation, a tally scoring total recoverable fission energy per source particle is applied to each pebble's outer cell in the bed. These tallies are created at runtime during the problem setup by using a list of pebble centers to locate the uppermost cell in the CSG geometry hierarchy containing that point.
+In the following, we discuss in more detail the mesh-tally API. To capture heat generation in the OpenMC simulation, a tally scoring total recoverable fission energy per source particle is applied to each pebble's outer cell in the bed. These tallies are created at runtime during the problem setup by using a list of pebble centers to locate the uppermost cell in the CSG geometry hierarchy containing that point.
 
 As summarized in \autoref{eq:heat_source_normalization}, the energy deposition for each pebble, $\hat{q}_{i}$, is normalized by the total energy deposition in the bed.  It is then multiplied by the total thermal power of the reactor, $Q$, to obtain an average heat generation rate for each pebble, $q_i$. This value is then divided by the volume of each pebble, $V_p$, to obtain a volumetric heat generation rate, $q'''_i$.
 
