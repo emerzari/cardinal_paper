@@ -1,7 +1,3 @@
-% !TEX root = ./rep.tex
-\section{Introduction}
-\label{s:intro}
-
 The Department of Energy (DOE) Nuclear Energy (NE) Center of Excellence for Thermal-fluid applications in Nuclear Energy (COE) \cite{shaver2019initial} inaugurated in April 2018 researches novel solution strategies to historically challenging issues involving fluid flow in nuclear reactors. These include issues that still plague the current fleet of deployed Light-Water Reactors (LWRs) and predict various fluid flow and fluid-related phenomena within advanced reactor technologies. Advanced-reactors studied include Small Modular Reactor (SMR) concepts, micro-reactors, and Advanced Reactor Concepts (ARC), utilizing coolants such as liquid metal, chloride, and fluoride salts, or gas, for accident-tolerant reactors. These new solution strategies and algorithms are implemented using modern software design methodology, best software quality practices, and then delivering validated NQA-1 level software to the nuclear power community.
 
 Our advanced thermal-fluids research and development approach synergistically combines three natural, overlapping, length and time scales in a hierarchal multi-scale approach to avoid the temptation and
@@ -25,11 +21,11 @@ One concept for an overall multiphysics strategy for FHR simulation is illustrat
 \begin{figure}[!h]
 \centering
 \includegraphics[clip=true,width=0.8\textwidth]{Figures/fhr_graph}
-\caption{Diagram showing the multiscale structure of the center excellence simulator for FHRs.}
+\caption{Diagram showing the multiscale structure of the COE simulator for FHRs.}
 \label{f:fhr1}
 \end{figure}
 
-Cardinal, the tool developed here, is the center of excellence for lower length-scale simulation for pebble beds. This new platform tightly couples all three physics and leverages advances in MOOSE \cite{gaston2009moose, permann2019moose}, such as the MultiApp system, and the concept of MOOSE-wrapped Apps \cite{gastonmultiapps}. Moreover, it is designed from the ground-up to scale on massively parallel architectures and perform well on leadership-class supercomputing architectures. Initial efforts in the development of the Cardinal were presented in a recent report \cite{cardinal}. In this manuscript, we provide a significant advancement to the high fidelity modeling of FHR pebble beds. We also demonstrate a hybrid GPU-CPU model to leverage pre-exascale supercomputer architectures (i.e., Summit) and the potential of scaling to full core simulations in the near future.
+Cardinal, the tool developed here, is the COE tool for lower length-scale simulation for pebble beds. This new platform tightly couples all three physics and leverages advances in MOOSE \cite{gaston2009moose, permann2019moose}, such as the MultiApp system, and the concept of MOOSE-wrapped Apps \cite{gastonmultiapps}. Moreover, it is designed from the ground-up to scale on massively parallel architectures and perform well on leadership-class supercomputing architectures. Initial efforts in the development of the Cardinal were presented in a recent report \cite{cardinal}. In this manuscript, we provide a significant advancement to the high fidelity modeling of FHR pebble beds. We also demonstrate a hybrid GPU-CPU model to leverage pre-exascale supercomputer architectures (i.e., Summit) and the potential of scaling to full-core simulations in the near future.
 
 In this manuscript, we:
 \begin{itemize}
