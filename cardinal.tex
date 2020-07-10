@@ -60,7 +60,7 @@ overly burdensome for more loosely-coupled physical systems. Therefore, utilizat
 \subsection{Design of Cardinal}
 \label{ss:c1}
 
-Cardinal utilizes the MOOSE MultiApp capability to place each of the applications to be coupled within a hierarchical tree-based structure, as shown in Figure~\ref{f:cardinal}. This structure was chosen based on how tightly-coupled the physics are. BISON and Nek5000 form one branch due to the instantaneous feedback between the conjugate heat transfer and the pebble temperature. The Nek5000 solution provides the temperature boundary condition on each pebble exterior while BISON returns the heat flux at each point around the pebble to Nek5000. Another benefit of having BISON and Nek5000 on their own branch is the way it impacts timestepping. Within the MultiApp setup shown in Figure \ref{f: Cardinal}, the branch containing BISON and Nek5000 can take many small timesteps and even iterate between BISON and Nek5000 within a timestep without needing to re-solve OpenMC. This can significantly reduce the time to solution of the application. OpenMC is then separate from the other two. It receives fuel/pebble temperatures from BISON and returns a heat source that is transferred down to BISON. OpenMC is currently solving for steady-state neutronics and can take larger timesteps compared to BISON and Nek5000 (which are both performing transient heat conduction and CFD solves respectively). The flexibility of the MOOSE MultiApp system allows for just such a setup.
+Cardinal utilizes the MOOSE MultiApp capability to place each of the applications to be coupled within a hierarchical tree-based structure, as shown in Figure~\ref{f:cardinal}. This structure was chosen based on how tightly-coupled the physics are. BISON and Nek5000 form one branch due to the instantaneous feedback between the conjugate heat transfer and the pebble temperature. The Nek5000 solution provides the temperature boundary condition on each pebble exterior while BISON returns the heat flux at each point around the pebble to Nek5000. Another benefit of having BISON and Nek5000 on their own branch is the way it impacts timestepping. Within the MultiApp setup shown in Figure \ref{f: cardinal}, the branch containing BISON and Nek5000 can take many small timesteps and even iterate between BISON and Nek5000 within a timestep without needing to re-solve OpenMC. This can significantly reduce the time to solution of the application. OpenMC is then separate from the other two. It receives fuel/pebble temperatures from BISON and returns a heat source that is transferred down to BISON. OpenMC is currently solving for steady-state neutronics and can take larger timesteps compared to BISON and Nek5000 (which are both performing transient heat conduction and CFD solves respectively). The flexibility of the MOOSE MultiApp system allows for just such a setup.
 
 \begin{figure}[!h]
 \centering
@@ -189,7 +189,7 @@ Temperature values from MOOSE are updated in OpenMC using an average temperature
 
 \subsubsection{BISON}
 
-BISON is a MOOSE-based \cite{hales2013triso, williamsonbison} nuclear fuel simulation tool primarily developed at Idaho National Laboratory.
+BISON is a MOOSE-based \cite{hales2013triso, williamson2012multidimensional} nuclear fuel simulation tool primarily developed at Idaho National Laboratory.
 BISON is capable of performing high-fidelity, finite-element simulation of various fuel forms, including
 light-water reactor fuel rods, TRISO fuel particles, and plate fuel. MOOSE allows BISON to solve many
 coupled physics, including heat-conduction, solid-mechanics, burnup, material evolution, plasticity, creep,
@@ -199,8 +199,4 @@ and high-order time integration necessary for simulation of operating reactors.
 
 BISON is a high-fidelity tool that has been developed to achieve predictive capability. It has undergone
 rigorous assessment testing and verification analysis to ensure accurate simulation. Further, BISON is
-developed using a rigorous V\&V plan. This is in addition to building on a high pedigree of software quality
-practices employed by the MOOSE Framework itself, which satisfy the United States NQA1 software quality
-requirements.
-
-Since BISON is a native MOOSE-based application, there is no need for an API.
+developed using a rigorous V\&V plan. We note that, since BISON is a native MOOSE-based application, there is no need for an API. We note also that calculations performed in this manuscript only exercise the conduction module, without any sophisticated fuel performance modeling as an initial demonstration step.
