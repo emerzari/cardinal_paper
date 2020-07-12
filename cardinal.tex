@@ -89,28 +89,40 @@ We have added a branch of the repository that compiles NekRS instead of Nek5000.
 
 \subsubsection{Nek5000/NekRS and API}
 
-Nek5000 \cite{fischer2015nek5000} is an open-source simulation-software package that delivers highly accurate solutions for a wide range of scientific applications, including
-fluid flow, thermal convection, combustion, and magnetohydrodynamics. It features state-of-the-art, scalable, high-order algorithms that are fast and efficient on platforms ranging from laptops to the DOE leadership computing facilities.
+Nek5000 \cite{fischer2015nek5000} is an open-source simulation-software package that delivers highly 
+accurate solutions for a wide range of scientific applications, including fluid flow, thermal convection, 
+combustion, and magnetohydrodynamics. It features state-of-the-art, scalable, high-order algorithms that 
+are fast and efficient on platforms ranging from laptops to the DOE leadership computing facilities.
 
-In Nek5000, the domain is decomposed globally into smaller domains (elements), which are assumed
-to be curvilinear hexahedra (brick meshes) that conform to the domain boundaries. Locally, functions within
-each element are expanded according to a polynomial expansion and operators are cast in tensor-product
-form. The pressure can be solved at the same polynomial order of the velocity $N$ ($P_{N} - P_{N}$ formulation)
-or at lower order $N-2$ ($P_{N} - P_{N-2}$ formulation). We note that Nek5000 employs only pure hexahedral
-non-conformal meshes. While this somewhat limits the application of the code, recent advances have enabled the use of Nek5000 on very complex geometries using a \textit{tex-to-hex} technique \cite{yuan2020spectral}.
-Temporal discretization is based on a high-order splitting that is third-order accurate in time and
-reduces the coupled velocity-pressure Stokes problem to four independent solves per timestep: one for each
-velocity component and one for the pressure. The velocity problems are diagonally dominant and thus easily
-solved by using Jacobi preconditioned conjugate gradient iteration. Two time-stepping schemes, both up to
-third order, are available: BDF and OIFS \cite{fischer2003implementation}. The pressure substep requires a Poisson solve at each step,
-performed through multigrid-preconditioned GMRES iteration coupled with temporal projection to find an optimal initial guess.
+Nek5000 is based on the spectral element method (SEM) \cite{patera1984} in which  the domain is decomposed 
+globally into smaller domains (elements), which are assumed to be curvilinear hexahedra (brick meshes) 
+conforming to the domain boundaries. Locally, functions within each element are expanded in high-order
+(typically $N$=4--12) tensor-product polynomials.
+The pressure can be solved at the same polynomial order of the velocity $N$ ($P_{N} - P_{N}$ formulation)
+or at lower order $N-2$ ($P_{N} - P_{N-2}$ formulation). 
+Temporal discretization is based on a high-order splitting that is third-order
+accurate in time and reduces the coupled velocity-pressure Stokes problem to
+four independent solves per timestep: one for each velocity component and one
+for the pressure. The velocity problems are diagonally dominant and thus easily
+solved by using Jacobi preconditioned conjugate gradient iteration. Two
+time-stepping schemes, both up to third order, are available: BDF and OIFS
+\cite{fischer2003implementation}. The pressure substep requires a Poisson solve
+at each step, performed through multigrid-preconditioned GMRES iteration
+coupled with temporal projection to find an optimal initial guess.
+We note that Nek5000 relies on hexahedral conformal meshes, which are generally
+more challenging to construct than meshes with tetrahedral elements.  Recent
+advances have enabled the use of Nek5000 on very complex geometries using a
+\textit{tex-to-hex} technique that produces remarkably well-conditioned
+meshes \cite{yuan2020spectral}.
+
 
 Particularly important components of Nek5000 are its scalable coarse-grid solvers that are central to
 parallel performance. For both weak scaling and strong scaling, using Algebraic Multi Grid (AMG) for the
 coarse-grid solve is essential above 250,000 elements. Nek5000 employs a pure MPI parallel implementation.
 An extensive discussion of the scalability of Nek5000 is provided in \cite{offermans2016strong}.
 
-All pebble bed simulations performed here use either large eddy simulation (LES), using an explicit filter \cite{fischer2001filter}, or Direct Numerical Simulation (DNS).
+All pebble bed simulations performed here use either large eddy simulation (LES), using an explicit 
+filter \cite{fischer2001filter}, or Direct Numerical Simulation (DNS).
 
 The coupling for Nek5000 to MOOSE is rather simple:
 \begin{itemize}
@@ -120,9 +132,20 @@ The coupling for Nek5000 to MOOSE is rather simple:
 flux.
 \item Finally, a set of routines for timestepping are defined.
 \end{itemize}
-We note that even with a relatively large problem like the demo problem discussed in this report, the solution transfer's memory footprint and computational cost are not significant compared to the physics solves.
+We note that even with a relatively large problem like the demo problem
+discussed in this report, the solution transfer's memory footprint and
+computational cost are not significant compared to the physics solves.
 
-Cardinal also interfaces with NekRS, a new GPU-oriented version of Nek5000. NekRS is also capable of running on CPUs. It represents a significant redesign of the code, with significant differences. It is primarily written in C++, but it also links to Nek5000 as a library for pre-processing and post-processing. It has been built primarily under the auspices of the Exascale Computing Program. It is able to reach excellent weak scaling performance. Details of NekRS performance for nuclear applications are provided in recent publications \cite{merzari2020toward}. The Cardinal API of NekRS heavily uses the Cardinal API of Nek5000 and yields identical results.
+
+Cardinal also interfaces with NekRS, a new GPU-oriented version of Nek5000
+that is also capable of running on CPUs. It represents a significant redesign
+of the code.  While written in C++, NekRS is able to link to Nek5000 to
+leverage its extensive pre- and post-processing utilities.  NekRS has been
+built primarily under the auspices of the Exascale Computing Program. It
+realizes high throughput on advanced GPU nodes and demonstrates excellent
+scalability.  Details of NekRS performance for nuclear applications are
+provided in recent publications \cite{merzari2020toward}. The Cardinal API of
+NekRS heavily uses the Cardinal API of Nek5000 and yields identical results.
 
 
 \subsubsection{OpenMC and API}
