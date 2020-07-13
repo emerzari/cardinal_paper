@@ -99,7 +99,7 @@ are fast and efficient on platforms ranging from laptops to the DOE leadership c
 Nek5000 is based on the spectral element method (SEM) \cite{patera1984} in which  the domain is decomposed 
 globally into smaller domains (elements), which are assumed to be curvilinear hexahedra (brick meshes) 
 conforming to the domain boundaries. Locally, functions within each element are expanded in high-order
-(typically $N$=4--12) tensor-product polynomials.
+(typically $N=4$--12) tensor-product polynomials.
 The pressure can be solved at the same polynomial order of the velocity $N$ ($P_{N} - P_{N}$ formulation)
 or at lower order $N-2$ ($P_{N} - P_{N-2}$ formulation). 
 Temporal discretization is based on a high-order splitting that is third-order
@@ -121,7 +121,7 @@ meshes \cite{yuan2020spectral}.
 Particularly important components of Nek5000 are its scalable coarse-grid solvers that are central to
 parallel performance. For both weak scaling and strong scaling, using Algebraic Multi Grid (AMG) for the
 coarse-grid solve is essential above 250,000 elements. Nek5000 employs a pure MPI parallel implementation.
-An extensive discussion of the scalability of Nek5000 is provided in \cite{offermans2016strong}.
+An extensive discussion of the scalability of Nek5000 is provided in \cite{offermans2016strong,fischer15,fischer20a}.
 
 All pebble bed simulations performed here use either large eddy simulation (LES), using an explicit 
 filter \cite{fischer2001filter}, or Direct Numerical Simulation (DNS).
@@ -129,10 +129,10 @@ filter \cite{fischer2001filter}, or Direct Numerical Simulation (DNS).
 The coupling for Nek5000 to MOOSE is rather simple:
 \begin{itemize}
 \item A point cloud with the GLL points corresponding to the surface mesh (corresponding to either $N = 2$ or $N = 1$) is defined. The points are used by MOOSE to define a mapping.
-\item A set of routines are then defined for solution transfer. The temperature is extracted on the Nek5000 mesh and loaded onto the points cloud in MOOSE.
+\item A set of routines is then defined for solution transfer. The temperature is extracted on the Nek5000 mesh and loaded onto the points cloud in MOOSE.
 \item The flux data is loaded from the points cloud and used to reconstruct an arbitrary order $N$ surface field for the heat
 flux.
-\item Finally, a set of routines for timestepping are defined.
+\item Finally, a set of routines for timestepping is defined.
 \end{itemize}
 We note that even with a relatively large problem like the demo problem
 discussed in this masnuscript, the solution transfer's memory footprint and
