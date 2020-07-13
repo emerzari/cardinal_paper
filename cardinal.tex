@@ -79,7 +79,9 @@ Nek5000, PETSc is not a dependency; but in Cardinal, OpenMC and Nek5000 use PETS
 \item The configuration info discovered by PETSc is passed to the build systems of OpenMC and Nek5000.
 \end{itemize}
 This is done through header files that PETSc generates specifically for this purpose. Hence, after installing PETSc and libMesh, Cardinal can be built in one step.
-We have added a branch of the repository that compiles NekRS instead of Nek5000. The build system also allows Cardinal to run on the Summit supercomputer at ORNL.
+%% NOTE: to math the diagram, not introducing NekRS yet, while still true statement.
+%%We have added a branch of the repository that compiles NekRS instead of Nek5000. The build system also allows Cardinal to run on the Summit supercomputer at ORNL.
+We have added a branch of the repository that compiles Nek5000. The build system also allows Cardinal to run on the Summit supercomputer at ORNL.
 \begin{figure}[!h]
 \centering
 \includegraphics[clip=true,width=0.9\textwidth]{Figures/build}
