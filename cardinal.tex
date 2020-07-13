@@ -111,11 +111,14 @@ time-stepping schemes, both up to third order, are available: BDF and OIFS
 \cite{fischer2003implementation}. The pressure substep requires a Poisson solve
 at each step, performed through multigrid-preconditioned GMRES iteration
 coupled with temporal projection to find an optimal initial guess.
-We note that Nek5000 relies on hexahedral conformal meshes, which are generally
-more challenging to construct than meshes with tetrahedral elements.  Recent
-advances have enabled the use of Nek5000 on very complex geometries using a
-\textit{tet-to-hex} technique that produces remarkably well-conditioned
-meshes \cite{yuan2020spectral}.
+All pebble bed simulations performed here use either large eddy simulation (LES), 
+using an explicit filter \cite{fischer2001filter}, or Direct Numerical Simulation (DNS).
+
+%We note that Nek5000 relies on hexahedral conformal meshes, which are generally
+%more challenging to construct than meshes with tetrahedral elements.  Recent
+%advances have enabled the use of Nek5000 on very complex geometries using a
+%\textit{tet-to-hex} technique that produces remarkably well-conditioned
+%meshes \cite{yuan2020spectral}.
 
 
 Particularly important components of Nek5000 are its scalable coarse-grid solvers that are central to
@@ -123,8 +126,18 @@ parallel performance. For both weak scaling and strong scaling, using Algebraic 
 coarse-grid solve is essential above 250,000 elements. Nek5000 employs a pure MPI parallel implementation.
 An extensive discussion of the scalability of Nek5000 is provided in \cite{fischer15,fischer20a}.
 
-All pebble bed simulations performed here use either large eddy simulation (LES), using an explicit 
-filter \cite{fischer2001filter}, or Direct Numerical Simulation (DNS).
+We note that Nek5000 relies on hexahedral conformal meshes, which are generally
+more challenging to construct than meshes with tetrahedral elements.  We have
+developed a \textit{tet-to-hex} technique that enables the use of Nek5000 on very 
+complex geometries and which produces remarkably well-conditioned meshes
+\cite{yuan2020spectral}.  Our early trials for the pebble bed are based on this
+approach.  To scale to very large pebble counts, however, we are developing a
+tailored approach to the generation of all-hex meshes in the pebble void regions.
+It is based on a tessellation of the Voronoi cells defined by the pebble
+centers and leads to a six-fold reduction in element count (thus
+enabling the use of higher polynomial order) and significant reduction in the
+CFL for a given timestep size.  We demonstrate the results for this approach
+in several examples below.
 
 The coupling for Nek5000 to MOOSE is rather simple:
 \begin{itemize}
