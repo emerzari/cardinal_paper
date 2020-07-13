@@ -98,13 +98,15 @@ at 2 million points per V100.
   \centering
   \begin{tabular}{c|cc|cc}
     \hline \hline
-  \multirow{2}{*}{ } &
+ % \multirow{2}{*}{ } &
   \multicolumn{1}{c|}{ } &
   \multicolumn{2}{|c|}{NekRS CPU}  &
   \multicolumn{2}{|c}{NekRS GPU} \\
-  \hline \hline
-  \cline{2-5}
-      &  time per step (sec) & ratio & time per step (sec) & ratio \\
+  \hline
+  \hline
+  %\cline{2-5}
+    nodes  &  time per step (sec) & ratio & time per step (sec) & ratio \\
+  \hline
     12 & 0.569 & 1.00 & 5.361  & 1.00\\
     20 & 0.416 & 0.82 & 3.055  & 1.05\\
     28 & 0.338 & 0.72 & 2.200  & 1.04\\
