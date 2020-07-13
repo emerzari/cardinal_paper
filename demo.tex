@@ -86,12 +86,9 @@ representative of the SANA experiments \cite{zou2017validation}, for instance.
 For this demonstration, the sizes and composition of the TRISO particles were based on TRISO manufactured at INL, following the practice established in the validation section. Though these particles were developed for the Advanced Gas Reactor (AGR) fuel, particles with the same specifications are used for FHR test reactors and computation benchmarks. The sizes and compositions of the pebbles were taken from the Mark-1 FHR reactor constructed at UC Berkeley. For BISON and the demonstration problem under consideration, we consider only the conduction equation, and as such, it is a relatively straightforward setup. Properties are constant and adapted from available correlations. The mesh for a single sphere is generated and replicated at run time. The same mesh is used for the mesh tallies in OpenMC.
 
 \subsubsection{Results}
-uuuuu
-Figure 3 compares scalability of
-Nek5000, NekRS (CPU), and NekRS (GPU) on ORNL’s Summit, which is equipped with 42 CPU cores
-and 6 Nvidia V100s per node. For the same node count, the GPU-accelerated variant of NekRS 9 to 14
-times faster, depending on the case. The figure on the right indicates that NekRS realizes 80% efficiency
-at 2 million points per V100.
+Table~\ref{tab:nekrs} compares scalability of NekRS (CPU) and NekRS (GPU) on ORNL’s Summit, which is equipped 
+with 42 CPU cores and 6 Nvidia V100s per node. For the same node count, the GPU-accelerated variant of NekRS 9 to 14
+times faster, depending on the case. NekRS realizes 80% efficiency at 2 million points per GPU.
 
 
 \begin{table}
