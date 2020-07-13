@@ -130,10 +130,10 @@ tailored approach to the generation of all-hex meshes in the pebble void regions
 It is based on a tessellation of the Voronoi cells defined by the pebble
 centers and leads to a six-fold reduction in element count (thus
 enabling the use of higher polynomial order) and significant reduction in the
-CFL for a given timestep size.  We demonstrate the results for this approach
-in several examples below.
+CFL for a given timestep size.  We demonstrate the results for this approach 
+for pebble-bed examples in later sections.
 
-The coupling for Nek5000 to MOOSE is rather simple:
+Nek5000 couples to MOOSE in a simple way:
 \begin{itemize}
 \item A point cloud with the GLL points corresponding to the surface mesh (corresponding to either $N = 2$ or $N = 1$) is defined. The points are used by MOOSE to define a mapping.
 \item A set of routines is then defined for solution transfer. The temperature is extracted on the Nek5000 mesh and loaded onto the points cloud in MOOSE.
