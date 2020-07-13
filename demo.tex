@@ -86,44 +86,44 @@ representative of the SANA experiments \cite{zou2017validation}, for instance.
 For this demonstration, the sizes and composition of the TRISO particles were based on TRISO manufactured at INL, following the practice established in the validation section. Though these particles were developed for the Advanced Gas Reactor (AGR) fuel, particles with the same specifications are used for FHR test reactors and computation benchmarks. The sizes and compositions of the pebbles were taken from the Mark-1 FHR reactor constructed at UC Berkeley. For BISON and the demonstration problem under consideration, we consider only the conduction equation, and as such, it is a relatively straightforward setup. Properties are constant and adapted from available correlations. The mesh for a single sphere is generated and replicated at run time. The same mesh is used for the mesh tallies in OpenMC.
 
 \subsubsection{Results}
-Table~\ref{tab:nekrs} compares scalability of NekRS (CPU) and NekRS (GPU) on ORNL’s Summit, which is equipped 
+Table~\ref{tab:nekrs} compares scalability of NekRS (GPU) and NekRS (CPU) on ORNL’s Summit, which is equipped 
 with 42 CPU cores and 6 Nvidia V100s per node. For the same node count, the GPU-accelerated variant of NekRS 9 to 14
 times faster, depending on the case. NekRS realizes 80% efficiency at 2 million points per GPU.
 
 
 \begin{table}
   \centering
-  \begin{tabular}{c|cc|cc}
+  \begin{tabular}{c|ccc||ccc}
     \hline \hline
  % \multirow{2}{*}{ } &
   \multicolumn{1}{c|}{ } &
-  \multicolumn{2}{|c|}{NekRS CPU}  &
-  \multicolumn{2}{|c}{NekRS GPU} \\
+  \multicolumn{3}{|c||}{NekRS GPU}  &
+  \multicolumn{3}{|c}{NekRS CPU} \\
   \hline
   \hline
   %\cline{2-5}
-    nodes  &  time per step (sec) & ratio & time per step (sec) & ratio \\
+    nodes  &  $E$ per GPU & time per step (sec) & efficiency & E per MPI rank& time per step (sec) & efficiency \\
   \hline
-    12 & 0.569 & 1.00 & 5.361  & 1.00\\
-    20 & 0.416 & 0.82 & 3.055  & 1.05\\
-    28 & 0.338 & 0.72 & 2.200  & 1.04\\
-    36 & 0.309 & 0.61 & 1.876  & 0.95\\
-    44 & 0.290 & 0.53 & 1.401  & 1.04\\
-    52 & 0.255 & 0.51 & 1.204  & 1.02\\
+    12 & 7283 & 0.569 & 1.00 & 1040 & 5.361  & 1.00\\
+    20 & 4369 & 0.416 & 0.82 & 624 & 3.055  & 1.05\\
+    28 & 3121 & 0.338 & 0.72 & 445 & 2.200  & 1.04\\
+    36 & 2427 & 0.309 & 0.61 & 346 & 1.876  & 0.95\\
+    44 & 1986 & 0.290 & 0.53 & 283 & 1.401  & 1.04\\
+    52 & 1680 & 0.255 & 0.51 & 240 & 1.204  & 1.02\\
     \hline \hline
   \end{tabular}
-  \caption{NekRS CPU/GPU strong-scale timings (seconds per step) for 100 steps of turbulent flow simulations
+  \caption{NekRS GPU/CPU strong-scale timings (seconds per step) for 100 steps of turbulent flow simulations
    with $Re=10000$ for 1568-pebble case using total number of grid point $n=179,864,398$.}
   \label{tab:nekrs}
 \end{table}
 
-The model described in the previous section has been run on 12 and 20 nodes of Summit, with 6 MPI ranks on each node, corresponding to the 6 GPUs on each node. The OpenMC and BISON models are designed to run on CPU while the NekRS model runs on the GPU. Stand-alone NekRS simulations have been run first up to 25 convective time units to develop turbulence, which are shown in Figure~\ref{f:ndemo3} using an LES approach.
+The model described in the previous section has been run on 12 and 20 nodes of Summit, with 6 MPI ranks on each node, corresponding to the 6 GPUs on each node. The OpenMC and BISON models are designed to run on CPU while the NekRS model runs on the GPU. Stand-alone NekRS simulations have been run first up to 25 convective time units to develop turbulence, which are shown in igure~\ref{f:ndemo3} using an LES approach.
 
 A restart file has then been generated and used to restart a transient simulation in Cardinal representing the pebbles' heat-up. The time step has been fixed to $5\times 10^{-4}$ s in both BISON and NekRS. The temperature at time zero has been set to 300 $^{\circ}$C everywhere. Figure~\ref{f:ndemo4} presents the temperature at the surface of the pebbles in BISON at three points in time. The simulations took 2.5 s per coupled time step on 20 nodes, requiring transfer between physics at each timestep. However, this could be significantly optimized by relaxing the requirement, as data transfer from GPU to CPU should be minimized as much as possible.
 
 \begin{figure}[!h]
 \centering
-\includegraphics[clip=true,width=0.5\textwidth]{Figures/ndemo_r3}
+\includegraphics[clip=true,width=0.9\textwidth]{Figures/ndemo_r3}
 \caption{NekRS: A velocity component for turbulent flow simulations using the spectral element mesh 
 with 524,386 spectral elements for 1568 pebbles from the all-hex meshing tool based on Voronoi cell strategy. }
 \label{f:ndemo3}
