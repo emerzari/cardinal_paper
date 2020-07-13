@@ -69,7 +69,7 @@ Cardinal utilizes the MOOSE MultiApp capability to place each of the application
 \label{f:cardinal}
 \end{figure}
 
-\subsubsection{Build system}
+\subsubsection{Build System}
 \label{ss:c2}
 
 In any multiphysics coupling project with many dependent libraries, ensuring consistent compilation and linking can be a challenge. Throughout Cardinal, we rely on PETSc to detect system-dependent configuration information and install as many third-party libraries as possible (Figure~\ref{f:build}). BISON, MOOSE, and libMesh already rely on PETSc, and they are built as usual. For standalone OpenMC and
@@ -113,12 +113,6 @@ at each step, performed through multigrid-preconditioned GMRES iteration
 coupled with temporal projection to find an optimal initial guess.
 All pebble bed simulations performed here use either large eddy simulation (LES), 
 using an explicit filter \cite{fischer2001filter}, or Direct Numerical Simulation (DNS).
-
-%We note that Nek5000 relies on hexahedral conformal meshes, which are generally
-%more challenging to construct than meshes with tetrahedral elements.  Recent
-%advances have enabled the use of Nek5000 on very complex geometries using a
-%\textit{tet-to-hex} technique that produces remarkably well-conditioned
-%meshes \cite{yuan2020spectral}.
 
 
 Particularly important components of Nek5000 are its scalable coarse-grid solvers that are central to
