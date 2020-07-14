@@ -4,17 +4,17 @@
 \label{s:sum}
 
 
-In this report, we describe the creation of Cardinal. Cardinal provides a platform for running coupled
+In this paper, we described the creation of Cardinal, which provides a platform for running coupled
 OpenMC--Nek5000/NekRS--BISON simulations. We demonstrated Cardinal's application to FHR demo problems and
-presented a limited verification and validation case. This exercise demonstrates that the MOOSE-Wrapped-App
+presented a limited verification and validation case. This exercise demonstrates that the MOOSE-Wrapped App
 paradigm works wells. Moreover, by wrapping OpenMC and Nek5000, they can now be coupled to any other MOOSE-based app.
 
-We demonstrated the application of Cardinal with a first-of-a-kind simulation on Summit, representing a $10\times$ pebble count increase compared to previous LES simulations. This exercise demonstrates that the MOOSE-Wrapped-App paradigm works well, even on a GPU platform like Summit. In these simulations, OpenMC and BISON run on the CPU while NekRS runs on the GPUs. The current results provide a clear pathway toward full core simulations.
+We demonstrated the application of Cardinal with a first-of-a-kind simulation on Summit, representing a $10\times$ pebble count increase compared with previous LES simulations. This exercise demonstrates that the MOOSE-Wrapped App paradigm works well, even on a GPU platform such as Summit. In these simulations, OpenMC and BISON run on the CPU while NekRS runs on the GPUs. The current results provide a clear pathway toward full-core simulations.
 
 Future work on Cardinal will involve a more sophisticated thermal contact treatment between pebbles,
 leveraging novel ideas using MOOSE constraints. We may also explore more advanced solution transfer
 mechanisms such as functional expansion tally transfers to and from OpenMC and Nek5000. We
-will also work on improving the scalability of transfers. We aim to achieve massively parallel simulations going up to the entire Summit machine for full core simulations. These simulations may involve asynchronous parallel execution between the
-physics. In these simulations, multiscale approach may also be employed to simulate a select number of fuel particles directly.
+will also work on improving the scalability of transfers. We aim to achieve massively parallel simulations going up to the entire Summit machine for full0core simulations. These simulations may involve asynchronous parallel execution between the
+physics. In these simulations, a multiscale approach may also be employed to simulate a select number of fuel particles directly.
 
-Finally, extension to gas reactors pebble beds will also be considered. As part of this, radiative heat transfers models will be added to Cardinal as it is an important component of the overall heat transfer behavior.
+Extension to gas reactors pebble beds will also be considered. As part of this effort, a radiative heat transfer models will be added to Cardinal because this is an important component of the overall heat transfer behavior.

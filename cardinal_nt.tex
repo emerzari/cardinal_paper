@@ -87,7 +87,7 @@
 
 \vspace{3pt}
 
-{\bf \large Elia Merzari,} \\
+{\bf \large Elia Merzari} \\
 \large Pennsylvania State University \\
 \large 228 Hallowell, University Park, PA, USA \\
 {\color{brown} ebm5351@psu.edu} \\
@@ -117,9 +117,10 @@
 
 \section*{ABSTRACT}
 
-This article demonstrates a multiphysics solver for pebble-bed reactors, in particular, for Berkeley's PB-FHR (Fluoride Cooled High-Temperature Reactors) Mark-I design. The Fluoride salt cooled High-temperature Reactor (FHR) is a class of advanced nuclear reactors that combines the robust coated particle fuel form from high-temperature gas-cooled reactors, direct reactor auxiliary cooling system (DRACS) passive decay removal of liquid metal fast reactors, and the transparent, high volumetric heat capacitance liquid Fluoride salt working fluids (e.g., FLiBe) from molten salt reactors. This fuel and coolant combination enables FHRs to operate in a high-temperature low-pressure design space that has beneficial safety and economic implications. The PB-FHR reactor relies on a pebble bed approach, and pebble bed reactors are, in a sense, the poster child for multiscale analysis.
+This article demonstrates a multiphysics solver for pebble-bed reactors, in particular, for Berkeley's PB-FHR (fluoride-salt-cooled high-temperature reactor) Mark-I design). The FHR is a class of advanced nuclear reactors that combines the robust coated particle fuel form from high-temperature gas-cooled reactors; the direct reactor auxiliary cooling system passive decay removal of liquid metal fast reactors; and the transparent, high volumetric heat capacitance liquid-fluoride0salt working fluids (e.g., FLiBe) from molten salt reactors. This fuel and coolant combination enables FHRs to operate in a high-temperature, low-pressure design space that has beneficial safety and economic implications. The PB-FHR reactor relies on a pebble bed approach; and pebble bed reactors are, in a sense, the poster child for multiscale analysis.
 
-Relying heavily on the Multiphysics Object-Oriented Simulation Environment's (MOOSE) MultiApp capability, we have developed Cardinal, a new platform for lower length-scale simulation of pebble-bed cores. The lower-length-scale simulator comprises three physics: neutronics (OpenMC), thermal-fluids (Nek5000/NekRS), and fuel performance (BISON).   Cardinal tightly couples all three physics and leverages advances in MOOSE, such as the MultiApp system and the concept of MOOSE-wrapped Apps. Moreover, Cardinal can utilize GPUs for accelerating solutions. In this manuscript, we discuss the development of Cardinal, verification, and validation, and demonstration simulations.
+Relying heavily on the MultiApp capability of Multiphysics Object-Oriented Simulation Environment (MOOSE),
+we have developed Cardinal, a new platform for lower-length-scale simulation of pebble-bed cores. The lower-length-scale simulator comprises three physics: neutronics (OpenMC), thermal-fluids (Nek5000/NekRS), and fuel performance (BISON).   Cardinal tightly couples all three physics and leverages advances in MOOSE, such as the MultiApp system and the concept of MOOSE-wrapped apps. Moreover, Cardinal can utilize GPUs for accelerating solutions. In this manuscript, we discuss the development of Cardinal, verification, and validation, and demonstration simulations.
 
 \begin{flushright}
 {\bf KEYWORDS} \\
