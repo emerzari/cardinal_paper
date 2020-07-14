@@ -65,14 +65,14 @@ For the coupled simulations, we opted to tightly couple Nek5000 and BISON and lo
 
 \begin{figure}[!h]
 \centering
-\includegraphics[clip=true,width=0.9\textwidth]{Figures/demo_r1}
+\includegraphics[clip=true,width=0.5\textwidth]{Figures/demo_r1}
 \caption{TAMU demo results. From left to right: snapshots of temperature on surface, average temperature in solid and average heating.}
 \label{f:dtamu1}
 \end{figure}
 
 \begin{figure}[!h]
 \centering
-\includegraphics[clip=true,width=0.9\textwidth]{Figures/demo_r2}
+\includegraphics[clip=true,width=0.5\textwidth]{Figures/demo_r2}
 \caption{TAMU Demo Results. Right -- temperature in the solid. Left -- temperature details in the fluid.}
 \label{f:dtamu2}
 \end{figure}
@@ -150,7 +150,7 @@ section has been run on up to 20 nodes of Summit, with 6 MPI ranks on each
 node, corresponding to the 6 GPUs on each node. The OpenMC and BISON models are
 designed to run on CPUs, while the NekRS model runs on the GPU. Prior to
 coupling, NekRS was used to run a stand-alone LES out to 25 convective time
-units in order develop generate a turbulent initial condition, which is shown
+units in order to develop and generate a turbulent initial condition, which is shown
 in Figure~\ref{f:ndemo3}.
 
 The flow initial condition was used to restart a coupled transient simulation in
@@ -166,9 +166,9 @@ much as possible.
 \begin{figure}[!h]
 \centering
 \includegraphics[clip=true,width=0.9\textwidth]{Figures/ndemo_r3}
-\caption{NekRS: a velocity component for turbulent flow simulations using the
-spectral element mesh with 524,386 spectral elements for 1568 pebbles from the
-all-hex meshing tool based on Voronoi cell strategy. } 
+\caption{NekRS: a velocity component for turbulent flow simulations at $Re=10,000$ 
+using the spectral element mesh with 524,386 spectral elements for 1568 pebbles from 
+the all-hex meshing tool based on Voronoi cell strategy. } 
 \label{f:ndemo3}
 \end{figure}
 
