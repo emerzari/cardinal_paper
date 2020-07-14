@@ -96,27 +96,26 @@ The NekRS GPU run realizes 82\% efficiency at 2.1 million points per GPU.
 
 \begin{table}
   \centering
-  \begin{tabular}{c|ccc||ccc}
-    \hline \hline
+  \begin{tabular}{c|cccc||cccc}
+    \hline 
  % \multirow{2}{*}{ } &
   \multicolumn{1}{c|}{ } &
-  \multicolumn{3}{|c||}{NekRS GPU}  &
-  \multicolumn{3}{|c}{NekRS CPU} \\
-  \hline
+  \multicolumn{4}{|c||}{NekRS GPU}  &
+  \multicolumn{4}{|c}{NekRS CPU} \\
   \hline
   %\cline{2-5}
-    Nodes  &  $E$ per GPU & time per step (sec) & efficiency & E per MPI& time per step (sec) & efficiency \\
+    Nodes  &  $E$/GPU & $n$/GPU & walltime/step (s) & eff & $E$/MPI& $n$/MPI & walltime/step (s) & eff\\
   \hline
-    12 & 7283 & 0.569 & 1.00 & 1040 & 5.361  & 1.00\\
-    20 & 4369 & 0.416 & 0.82 & 624 & 3.055  & 1.05\\
-    28 & 3121 & 0.338 & 0.72 & 445 & 2.200  & 1.04\\
-    36 & 2427 & 0.309 & 0.61 & 346 & 1.876  & 0.95\\
-    44 & 1986 & 0.290 & 0.53 & 283 & 1.401  & 1.04\\
-    52 & 1680 & 0.255 & 0.51 & 240 & 1.204  & 1.02\\
+    12 & 7283 & 2.4M & 0.569 & 1.00 & 1040 & 356K & 5.361  & 1.00\\
+    20 & 4369 & 1.4M & 0.416 & 0.82 & 624 & 214K  & 3.055  & 1.05\\
+    28 & 3121 & 1.0M & 0.338 & 0.72 & 445 & 152K & 2.200  & 1.04\\
+    36 & 2427 & 0.8M & 0.309 & 0.61 & 346 & 118K & 1.876  & 0.95\\
+    44 & 1986 & 0.6M & 0.290 & 0.53 & 283 & 97K & 1.401  & 1.04\\
+    52 & 1680 & 0.5M & 0.255 & 0.51 & 240 & 82K & 1.204  & 1.02\\
     \hline \hline
   \end{tabular}
-  \caption{NekRS GPU/CPU Strong-Scale timings (seconds per step) for 100 Steps of Turbulent flow Simulations
-   with $Re=10000$ for 1,568-Pebble Case Using total Number of Grid Points $n=179,864,398$}
+  \caption{NekRS GPU/CPU Strong-Scale Timings (seconds per step) for 100 Steps of Turbulent flow Simulations
+   with $Re=10000$ for 1,568-Pebble Case Using Total Number of Grid Points $n=179,864,398$ ($E=524,386$ and $N=7$).} 
   \label{tab:nekrs}
 \end{table}
 
@@ -189,15 +188,15 @@ resulting heat transfer to the fluid.
 
 Twenty nodes of Summit represents less than 1\% of the computing power available on Summit. We estimate that 80\% of the machine will be sufficient to perform a full-core calculation in FHRs corresponding to 300,000 pebbles.
 
-Table~\ref{tab:pebble} demonstrates our current all-hex meshing capability from 146 to 11,145 pebbles 
-using 3.5 million spectral elements (total 2 million points, $n = EN^3$) 
+Table~\ref{tab:pebble} demonstrates our current all-hex meshing capability based on Voronoi cell strategy
+up to 11,145 pebbles using 3.5 million spectral elements (total 2 million grid points, $n = EN^3$) 
 and their averaged walltime per timestep from flow simulations with
 $Re= 5000$ up to time $=7$. % involving 14000--15750 time steps.  
 \begin{table}
   \centering
   \begin{tabular}{cccccccc}
   \hline \hline
-    \# pebbles & $E$ & $E$/pebble & \# nodes & \# GPU & $E$/GPU & $n$/GPU & walltime (sec)/step \\
+    \# pebbles & $E$ & $E$/pebble & \# nodes & \# GPUs & $E$/GPU & $n$/GPU & walltime/step (s) \\
   \hline
    146 & 62,132 & 425 & 2 & 12 & 5177 & 2.6M &  0.34    \\
    1568 & 524,386 & 334 & 28 & 168 & 3121 & 1.5M & 0.40   \\
@@ -212,7 +211,8 @@ $Re= 5000$ up to time $=7$. % involving 14000--15750 time steps.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \hline \hline
   \end{tabular}
-  \caption{NekRS: All-hex meshing capability, based on Voronoi cell strategy, for pebbles, and simulation walltime on GPUs.}
+  \caption{NekRS: All-Hex Meshes for Pebbles, Based on Voronoi Cell strategy, and Simulation Timings (seconds per step) on GPUs
+   of Turbulent Flow Simulations with $Re = 5000$.}
   \label{tab:pebble}
 \end{table}
 
