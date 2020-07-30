@@ -33,7 +33,7 @@ creating a few objects that wrap an external app and present it to MOOSE as a
 MOOSE-based application, that external application can then be placed into any
 point in the hierarchy. For the current effort, OpenMC and Nek5000 were wrapped
 in the MWA interfaces, allowing them to participate in a MultiApp solve. For
-each application the following interfaces were developed: 
+each application the following interfaces were developed:
 \begin{itemize}
     \item \textit{ExternalApp}: Derives from MooseAppBase and is the basic wrapper to the code the MultiApp
     system needs.
@@ -109,7 +109,7 @@ We have added a branch of the repository that compiles Nek5000. The build system
 
 \subsubsection{Nek5000/NekRS and API}
 
-Nek5000 \cite{fischer2015nek5000} is an open-source simulation software package
+Nek5000 \cite{nek5000_github} is an open-source simulation software package
 that delivers highly accurate solutions for a wide range of scientific
 applications, including fluid flow, thermal convection, combustion, and
 magnetohydrodynamics. It features state-of-the-art, scalable high-order
@@ -133,7 +133,7 @@ BDF-extrapolation or subcycle-based characteristics. The characteristics
 scheme permits relatively large timesteps corresponding to CFL numbers
 of 4 or more \cite{patel19}. The pressure substep requires a Poisson solve
 at each step, performed through multigrid-preconditioned GMRES iteration
-coupled with temporal projection to find an optimal initial guess.  
+coupled with temporal projection to find an optimal initial guess.
 Particularly important components of Nek5000 are its scalable coarse-grid
 solvers that are central to parallel performance. For both weak and
 strong scaling, using algebraic multigrid for the coarse-grid solve is
@@ -143,7 +143,7 @@ provided in \cite{fischer15,fischer20a}.
 
 We note that Nek5000 relies on hexahedral conformal meshes, which are generally
 more challenging to construct than meshes with tetrahedral elements.  We have
-developed a \textit{tet-to-hex} technique that enables the use of Nek5000 on 
+developed a \textit{tet-to-hex} technique that enables the use of Nek5000 on
 complex geometries and that produces remarkably well-conditioned meshes
 \cite{yuan2020spectral}.  Our early trials for the pebble bed are based on this
 approach.  To scale to very large pebble counts, however, we are developing a
@@ -161,8 +161,8 @@ three elements in the radial direction) and the overall mesh is smoothed using
 the algorithms presented in \cite{mittal19a}.  Refinements of the algorithm
 include deletion (collapse) of short edges in the Voronoi cells and insertion
 of points on long edges in order to produce a more uniform mesh throughout the
-domain.  The Voronoi-based approach leads to a six-fold reduction in element 
-count (thus enabling the use of higher polynomial order) and significant 
+domain.  The Voronoi-based approach leads to a six-fold reduction in element
+count (thus enabling the use of higher polynomial order) and significant
 reduction in the CFL for a given timestep size compared to the more general
 tet-to-hex strategy.  We demonstrate the results for this approach for
 pebble-bed examples in later sections.
@@ -170,14 +170,14 @@ pebble-bed examples in later sections.
 Nek5000 couples to MOOSE in a simple way:
 \begin{itemize}
  \item A point cloud with the GLL points corresponding to the surface mesh
-      (corresponding to either $N = 2$ or $N = 1$) is defined. The points are 
-      used by MOOSE to define a mapping.  
- \item A set of routines is then defined for solution transfer. The temperature 
+      (corresponding to either $N = 2$ or $N = 1$) is defined. The points are
+      used by MOOSE to define a mapping.
+ \item A set of routines is then defined for solution transfer. The temperature
       is extracted on the Nek5000 mesh and loaded onto the points cloud in MOOSE.
- \item The flux data is loaded from the points cloud and used to reconstruct 
-      an arbitrary order $N$ surface field for the heat flux.  
- \item A set of routines for timestepping is defined.  
-\end{itemize} 
+ \item The flux data is loaded from the points cloud and used to reconstruct
+      an arbitrary order $N$ surface field for the heat flux.
+ \item A set of routines for timestepping is defined.
+\end{itemize}
 We note that even with a relatively large problem like the demo problem
 discussed in this masnuscript, the solution transfer's memory footprint and
 computational cost are not significant compared with the physics solves.
