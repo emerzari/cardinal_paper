@@ -101,7 +101,7 @@ based on TRISO manufactured at INL, following the practice established in the
 validation section. Although these particles were developed for the AGR fuel,
 particles with the same specifications are used for FHR test reactors and
 computation benchmarks. The sizes and compositions of the pebbles were taken
-from the Mark-1 FHR reactor constructed at UC Berkeley. For BISON and the
+from the Mark-1 FHR reactor design. For BISON and the
 demonstration problem, we consider only the conduction equation, and hence  it
 is a relatively straightforward setup. Properties are constant and adapted from
 available correlations. The mesh for a single sphere is generated and
@@ -148,7 +148,7 @@ section has been run on up to 20 nodes of Summit, with 6 MPI ranks on each
 node, corresponding to the 6 GPUs on each node. The OpenMC and BISON models are
 designed to run on CPUs, while the NekRS model runs on the GPU. Prior to
 coupling, NekRS was used to run a stand-alone LES out to 25 convective time
-units in order develop generate a turbulent initial condition, which is shown
+units in order to develop and generate a turbulent initial condition, which is shown
 in Figure~\ref{f:ndemo3}.
 
 The flow initial condition was used to restart a coupled transient simulation in
