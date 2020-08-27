@@ -8,7 +8,7 @@ extensive verification history for stand-alone and multiphysics applications.
 \subsection{Flow and Heat Transfer Verification and Validation}
 
 \subsubsection{Nek5000 - Canonical cases}
-To verify the fluid flow model and the solution transfer, we have devised two cases: a single pebble and a two-pebble case. The Nek5000-MOOSE coupling was verified to yield the same results as stand-alone Nek5000 conjugate heat transfer results. We note that work in Cardinal was based on previous work conducted on Nek5000-MOOSE coupling \cite{novak2018preliminary}. Single-pebble (Figure~\ref{f:vvf1}) and two-pebble (Figure~\ref{f:vvf2}) cases were used to verify the solution transfer. They were also used to verify the coupling with OpenMC and BISON coupling. For instance, the neutronics results showed a clear bias between pebbles and a tilt induced by the temperature gradient.
+To verify the fluid flow model and the solution transfer, we have devised two cases: a single pebble and a two-pebble case. The Nek5000-MOOSE coupling was verified to yield the same results as stand-alone Nek5000 conjugate heat transfer results. We note that work in Cardinal was based on previous work conducted on Nek5000-MOOSE coupling \cite{novak2018preliminary}. Single-pebble (Figure~\ref{f:vvf1}) and two-pebble (Figure~\ref{f:vvf2}) cases were used to verify the solution transfer. They were also used to verify the coupling with OpenMC and BISON. For instance, the neutronics results showed a clear bias between pebbles and a tilt induced by the temperature gradient.
 
 \begin{figure}[!h]
 \centering
@@ -173,7 +173,7 @@ test reactors and computations benchmarks \cite{charalampos2014}.  The pebbles' 
   \label{tab:pebble_dims}
 \end{table}
 
-The resultant OpenMC model is shown in the left image of Figure~\ref{f:openmc_pebble}.  In this demo, the TRISO particles are packed in a regular square lattice with the same overall packing fraction described by \cite{phillips2010}, rather than a randomized and/or irregular distribution.  This choice was made to simplify the direct code-to-code comparison. Some optimization methods specifically for generation of randomly distributed TRISO particles are available in OpenMC \cite{openmcdocs_triso} and can be optionally applied in the Cardinal demonstration simluations discussed below.
+The resultant OpenMC model is shown in the left image of Figure~\ref{f:openmc_pebble}.  In this exercise, the TRISO particles are packed in a regular square lattice with the same overall packing fraction described by \cite{phillips2010}, rather than a randomized and/or irregular distribution.  This choice was made to simplify the direct code-to-code comparison. Some optimization methods specifically for generation of randomly distributed TRISO particles are available in OpenMC \cite{openmcdocs_triso} and can be optionally applied in the Cardinal demonstration simulations discussed below.
 
 \begin{figure}[!h]
 \centering
@@ -192,7 +192,7 @@ Table~\ref{tab:eigen} presents a comparisons for the $k$-eigenvalue computed wit
     \hline \hline
     MCNP &  & \\
     \hline
-    Boundary conditions & Eigenvalue & \\
+    Boundary conditions & Eigenvalue & Standard Deviation \\
     \hline
     \textbf{r vacuum and z vacuum}         & 0.00357 & 0.000005 \\
     \textbf{r vacuum and z white}	         & 0.00463 & 0.000005 \\
@@ -201,7 +201,7 @@ Table~\ref{tab:eigen} presents a comparisons for the $k$-eigenvalue computed wit
     \hline \hline
     OpenMC & & \\
     \hline
-    Boundary conditions & Eigenvalue & \\
+    Boundary conditions & Eigenvalue & Standard Deviation\\
     \hline
     \textbf{r vacuum and z vacuum}         & 0.00356 & 0.00001 \\
     \textbf{r vacuum  and z reflective}    & 0.00451 & 0.00001 \\

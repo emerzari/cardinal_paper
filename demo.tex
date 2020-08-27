@@ -4,7 +4,7 @@
 
 We demonstrate here the use of Cardinal on two pebble-bed configurations
 that are representative of FHR cores.  The first case consists of 146
-pebbles and the second uses 1568 pebbles.
+pebbles and it is run with Nek5000 on CPUs. The second uses 1568 pebbles and it is run with NekRS running on GPUs.
 
 \subsection{146 Pebbles}
 \label{ss:c4}
@@ -22,10 +22,13 @@ overall. It is designed to run at $N=5$ for coarse results and $N=7$ for
 finer simulations (for a max of 256 million grid points). We
 assume constant properties.
 
+We note that this small-size bed is not representative of the behavior of large pebble beds,
+but it was chosen because of the available of an experimental data set for comparison (at least for the thermal-hydraulics model). It should be seen only as an initial demonstration step, in an effort to scale to larger pebble beds.
+
 \begin{figure}[!h]
 \centering
 \includegraphics[clip=true,width=0.8\textwidth]{Figures/pb_mesh}
-\caption{Mesh and boundary conditions for Nek5000 problem.}
+\caption{Mesh and boundary conditions for Nek5000 problem (146 pebbles).}
 \label{f:pb2}
 \end{figure}
 
@@ -50,7 +53,7 @@ advection-diffusion equation.
     4 & Constant temperature   & Full Navier-Stokes \\
     \hline \hline
   \end{tabular}
-  \caption{Nek5000 Cases with Various Volver Options}
+  \caption{Nek5000 Cases with Various Solver Options}
   \label{tab:nek}
 \end{table}
 
@@ -123,7 +126,7 @@ parallel efficiency at 2.1 million points per GPU.
 \begin{table}
   \centering
   \begin{tabular}{c|cccc||cccc}
-    \hline 
+    \hline
  % \multirow{2}{*}{ } &
   \multicolumn{1}{c|}{ } &
   \multicolumn{4}{|c||}{NekRS GPU}  &
@@ -141,7 +144,7 @@ parallel efficiency at 2.1 million points per GPU.
     \hline \hline
   \end{tabular}
   \caption{NekRS GPU/CPU Strong-Scale Timings (seconds per step) for 100 Steps of Turbulent flow Simulations
-   with $Re=10000$ for 1568-Pebble Case Using Total Number of Grid Points $n=179,864,398$ ($E=524,386$ and $N=7$).} 
+   with $Re=10000$ for 1568-Pebble Case Using Total Number of Grid Points $n=179,864,398$ ($E=524,386$ and $N=7$).}
   \label{tab:nekrs}
 \end{table}
 
@@ -168,7 +171,7 @@ much as possible.
 \includegraphics[clip=true,width=0.9\textwidth]{Figures/ndemo_r3}
 \caption{NekRS: a velocity component for turbulent flow simulations using the
 spectral element mesh with 524,386 spectral elements for 1568 pebbles from the
-all-hex meshing tool based on Voronoi cell strategy. } 
+all-hex meshing tool based on Voronoi cell strategy. }
 \label{f:ndemo3}
 \end{figure}
 
@@ -235,33 +238,22 @@ per GPU on Summit.  By running with 4 million points per GPU, we estimate that
 80\% of the machine will be sufficient to perform a full-core calculation in
 FHRs corresponding to 300,000 pebbles.
 
-%% NOTE: can remove table data if not necessary
-% Table~\ref{tab:pebble} demonstrates our current all-hex meshing capability
-% based on Voronoi cell strategy up to 11,145 pebbles using 3.5 million spectral
-% elements (total 2 million grid points, $n = EN^3$) 
-% and their averaged walltime per timestep from flow simulations with
-% $Re= 5000$ up to time $=7$. % involving 14000--15750 time steps.  
-% \begin{table}
-%   \centering
-%   \begin{tabular}{cccccccc}
-%   \hline \hline
-%     \# pebbles & $E$ & $E$/pebble & \# nodes & \# GPUs & $E$/GPU & $n$/GPU & walltime/step (s) \\
-%   \hline
-%    146 & 62,132 & 425 & 2 & 12 & 5177 & 2.6M &  0.34    \\
-%    1568 & 524,386 & 334 & 28 & 168 & 3121 & 1.5M & 0.40   \\
-%    3260 & 1,121,214 & 343 & 50 & 300 & 3737 & 1.9M & 0.75   \\
-%    11145 & 3,575,076 & 320 & 148 & 888 & 4025 & 2.0M & 0.90  \\
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% %  \# pebbles & $E$ & $E$/pebble & \# nodes & \# GPU & $E$/GPU & $n$/GPU & timesteps & walltime ($T=7$) \\
-% %  146 & 62,132 & 425 & 2 & 12 & 5177 & 2.6M & 14,000 timesteps (dt=5e-4) & 4860.87 \\
-% %  1568 & 524,386 & 334 & 28 & 168 & 3121 & 1.5M & 14,000   (dt=5e-4)    & 5735.58  \\
-% %  3260 & 1,121,214 & 343 & 50 & 300 & 3737 & 1.9M & 15,750  (dt= 5e-4 or dt=4e-4)   & 11855.54  \\  %% <--- 15750= 7k (5e-4) + 8750 (4e-4) 
-% %  11145 & 3,575,076 & 320 & 148 & 888 & 4025 & 2.0M & 14,000  (dt=5e-4)  & 12639.43  \\
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     \hline \hline
-%   \end{tabular}
-%   \caption{NekRS: All-Hex Meshes for Pebbles, Based on Voronoi Cell strategy, and Simulation Timings (seconds per step) on GPUs
-%    of Turbulent Flow Simulations with $Re = 5000$.}
-%   \label{tab:pebble}
-% \end{table}
-% 
+We note that in addition to the cases presented here, additional NekRS cases have been meshed and simulations performed on Summit. In fact Table~\ref{tab:pebble} demonstrates our current all-hex meshing capability based on Voronoi cell strategy up to 11,145 pebbles using 3.5 million spectral elements (total 2 billion grid points, $n = EN^3$)  and their averaged walltime per timestep from flow simulations with $Re= 5000$ up to time $=7$ involving 14000--15750 time steps.
+
+ \begin{table}
+   \centering
+   \begin{tabular}{cccccccc}
+   \hline \hline
+     \# pebbles & $E$ & $E$/pebble & \# nodes & \# GPUs & $E$/GPU & $n$/GPU & walltime/step (s) \\
+   \hline
+    146 & 62,132 & 425 & 2 & 12 & 5177 & 2.6M &  0.34    \\
+    1568 & 524,386 & 334 & 28 & 168 & 3121 & 1.5M & 0.40   \\
+    3260 & 1,121,214 & 343 & 50 & 300 & 3737 & 1.9M & 0.75   \\
+    11145 & 3,575,076 & 320 & 148 & 888 & 4025 & 2.0M & 0.90  \\
+
+     \hline \hline
+   \end{tabular}
+   \caption{NekRS: All-Hex Meshes for Pebbles, Based on Voronoi Cell strategy, and Simulation Timings (seconds per step) on GPUs
+    of Turbulent Flow Simulations with $Re = 5000$.}
+   \label{tab:pebble}
+ \end{table}

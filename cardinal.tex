@@ -9,7 +9,7 @@ libMesh \cite{kirk2006libmesh} to perform a Newton solve over all of the
 physics to find the solution to the multiphysics problem. While this is still
 the primary way to use MOOSE, the library has also gained capability for
 loosely coupled solves, Picard iteration, and even coupling to external
-applications (such as OpenMC and Nek5000).  In this section we dicuss the
+applications (such as OpenMC and Nek5000).  In this section we discuss the
 MultiApp features of MOOSE used in Cardinal.  A new MOOSE-based application was
 created \cite{cardinal}  that compiles all of the codes into one executable.
 For the previous study, that code was named Cardinal and combined BISON,
@@ -33,14 +33,15 @@ creating a few objects that wrap an external app and present it to MOOSE as a
 MOOSE-based application, that external application can then be placed into any
 point in the hierarchy. For the current effort, OpenMC and Nek5000 were wrapped
 in the MWA interfaces, allowing them to participate in a MultiApp solve. For
-each application the following interfaces were developed: 
+each application the following interfaces were developed:
+
 \begin{itemize}
     \item \textit{ExternalApp}: Derives from MooseAppBase and is the basic wrapper to the code the MultiApp
     system needs.
     \item \textit{ExternalProblem}: Derives from Problem to implement solve(), which calls the external code and creates data fields.
     \item \textit{ExternalMesh}: Derives from MooseMesh to create a mesh that is compatible with the external app.
 \end{itemize}
-While MultiApps create trees of executing applications, transfers are needed to move data between them. Transfers move data only vertically, up and down the hierarchy of applications. Many different types of transfers exist, including interpolation projection, evaluatin, data coy, postprocessor transfer, and scslar variable transfer.
+While MultiApps create trees of executing applications, transfers are needed to move data between them. Transfers move data only vertically, up and down the hierarchy of applications. Many different types of transfers exist, including interpolation projection, evaluation, data copy, post-processor transfer, and scalar variable transfer.
 %\begin{itemize}
 %  \item Interpolation
 %  \item Projection
@@ -99,7 +100,7 @@ Nek5000, PETSc is not a dependency; but in Cardinal, OpenMC and Nek5000 use PETS
 This is done through header files that PETSc generates specifically for this purpose. Hence, after installing PETSc and libMesh, Cardinal can be built in one step.
 %% NOTE: to math the diagram, not introducing NekRS yet, while still true statement.
 %%We have added a branch of the repository that compiles NekRS instead of Nek5000. The build system also allows Cardinal to run on the Summit supercomputer at ORNL.
-We have added a branch of the repository that compiles Nek5000. The build system also allows Cardinal to run on the Summit supercomputer at ORNL.
+The build system also allows Cardinal to run on the Summit supercomputer at ORNL.
 \begin{figure}[!h]
 \centering
 \includegraphics[clip=true,width=0.9\textwidth]{Figures/build}
@@ -133,7 +134,7 @@ BDF-extrapolation or subcycle-based characteristics. The characteristics
 scheme permits relatively large timesteps corresponding to CFL numbers
 of 4 or more \cite{patel19}. The pressure substep requires a Poisson solve
 at each step, performed through multigrid-preconditioned GMRES iteration
-coupled with temporal projection to find an optimal initial guess.  
+coupled with temporal projection to find an optimal initial guess.
 Particularly important components of Nek5000 are its scalable coarse-grid
 solvers that are central to parallel performance. For both weak and
 strong scaling, using algebraic multigrid for the coarse-grid solve is
@@ -143,7 +144,7 @@ provided in \cite{fischer15,fischer20a}.
 
 We note that Nek5000 relies on hexahedral conformal meshes, which are generally
 more challenging to construct than meshes with tetrahedral elements.  We have
-developed a \textit{tet-to-hex} technique that enables the use of Nek5000 on 
+developed a \textit{tet-to-hex} technique that enables the use of Nek5000 on
 complex geometries and that produces remarkably well-conditioned meshes
 \cite{yuan2020spectral}.  Our early trials for the pebble bed are based on this
 approach.  To scale to very large pebble counts, however, we are developing a
@@ -161,8 +162,8 @@ three elements in the radial direction) and the overall mesh is smoothed using
 the algorithms presented in \cite{mittal19a}.  Refinements of the algorithm
 include deletion (collapse) of short edges in the Voronoi cells and insertion
 of points on long edges in order to produce a more uniform mesh throughout the
-domain.  The Voronoi-based approach leads to a six-fold reduction in element 
-count (thus enabling the use of higher polynomial order) and significant 
+domain.  The Voronoi-based approach leads to a six-fold reduction in element
+count (thus enabling the use of higher polynomial order) and significant
 reduction in the CFL for a given timestep size compared to the more general
 tet-to-hex strategy.  We demonstrate the results for this approach for
 pebble-bed examples in later sections.
@@ -170,29 +171,29 @@ pebble-bed examples in later sections.
 Nek5000 couples to MOOSE in a simple way:
 \begin{itemize}
  \item A point cloud with the GLL points corresponding to the surface mesh
-      (corresponding to either $N = 2$ or $N = 1$) is defined. The points are 
-      used by MOOSE to define a mapping.  
- \item A set of routines is then defined for solution transfer. The temperature 
+      (corresponding to either $N = 2$ or $N = 1$) is defined. The points are
+      used by MOOSE to define a mapping.
+ \item A set of routines is then defined for solution transfer. The temperature
       is extracted on the Nek5000 mesh and loaded onto the points cloud in MOOSE.
- \item The flux data is loaded from the points cloud and used to reconstruct 
-      an arbitrary order $N$ surface field for the heat flux.  
- \item A set of routines for timestepping is defined.  
-\end{itemize} 
+ \item The flux data is loaded from the points cloud and used to reconstruct
+      an arbitrary order $N$ surface field for the heat flux.
+ \item A set of routines for timestepping is defined.
+\end{itemize}
 We note that even with a relatively large problem like the demo problem
-discussed in this masnuscript, the solution transfer's memory footprint and
+discussed in this manuscript, the solution transfer's memory footprint and
 computational cost are not significant compared with the physics solves.
 
 Cardinal also interfaces with NekRS, a new GPU-oriented version of Nek5000
 that is also capable of running on CPUs. It represents a significant redesign
 of the code.  While written in C++, NekRS is able to link to Nek5000 to
 leverage its extensive pre- and postprocessing utilities.  NekRS has been
-built primarily under the auspices of the DOe Exascale Computing Project. It
+built primarily under the auspices of the DOE Exascale Computing Project. It
 realizes high throughput on advanced GPU nodes and demonstrates excellent
 scalability.  Details of NekRS performance for nuclear applications are
 provided in recent publications \cite{merzari2020toward}. The Cardinal API of
 NekRS heavily uses the Cardinal API of Nek5000 and yields identical results.
 
-  All pebble bed simulations performed here use either LES, using an explicit
+All pebble bed simulations performed here use either LES, using an explicit
 filter \cite{fischer2001filter}, or direct numerical simulation (DNS). The CFD
 resolution requirements are thus significant---about 150,000 points per pebble.
 The rapid convergence of the high-order discretizations in Nek5000 and NekRS
