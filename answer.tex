@@ -1,0 +1,216 @@
+%\documentclass[11pt,letterpaper,english]{article}
+\documentclass{nseJournal}
+% Page design
+%\usepackage[top=1in, bottom=1in, left=1in, right=1in] {geometry}
+%\pagestyle{empty}
+
+% General packages
+\usepackage[T1]{fontenc}
+%\usepackage{txfonts}
+\usepackage{xcolor}
+%\usepackage{eqnarray}
+\usepackage{epsfig}
+\usepackage{epstopdf}
+\usepackage{graphicx}
+\usepackage{mathptmx}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{setspace}
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{floatrow}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{hhline}
+\setlength\doublerulesep{.7pt}
+%\usepackage{tabularx}
+\usepackage{subcaption}
+%\usepackage{float}
+%\usepackage{sectsty}
+
+%\usepackage{csmacros}
+\usepackage{dsfont}
+%\input{csvers.tex}
+
+% Section format
+\usepackage{sectsty}
+\sectionfont{\normalsize}
+\subsectionfont{\normalsize}
+\subsubsectionfont{\normalsize \it}
+\usepackage{titlesec}
+\setlength{\parskip}{\baselineskip}
+\setlength{\parindent}{0pt}
+
+\titlespacing\section{0pt}{0\parskip}{0\parskip}
+\titlespacing\subsection{0pt}{0\parskip}{0\parskip}
+\titlespacing\subsubsection{0pt}{0\parskip}{0\parskip}
+\titleformat{\section}[block]{\normalfont\normalsize\bfseries}{\thesection .}{1em}{}
+\titleformat{\subsection}[block]{\normalfont\normalsize\bfseries}{\thesubsection .}{1em}{}
+\titleformat{\subsubsection}[block]{\normalfont\normalsize\bfseries}{\thesubsubsection .}{1em}{}
+
+% Bibliography format
+
+%\usepackage[hidelinks]{hyperref}
+%\usepackage[numbers]{natbib}
+%\usepackage{doi}
+
+\renewcommand{\refname}{REFERENCES}
+%\makeatletter
+%\renewcommand\@biblabel[1]{#1.\em}
+%\makeatother
+%\setlength{\bibsep}{0pt plus 0.3ex}
+
+% Captions
+\usepackage{caption}
+\captionsetup[figure]{labelfont={bf,normalsize},textfont={bf,normalsize},labelformat={default},labelsep=period,name={Figure}}
+
+% Tables
+\floatsetup[table]{capposition=top}
+\captionsetup[table]{labelfont={bf,normalsize},textfont={bf,normalsize},labelformat={default},labelsep=period,name={Table}}
+\renewcommand{\thetable}{\Roman{table}}
+\captionsetup[sub]{font={normalsize},labelfont={bf,normalsize}}
+
+% UDF
+\definecolor{brown}{RGB}{74,68,42}
+\newcommand{\tw}[1]{#1\textwidth}
+\newcommand{\lw}{\linewidth}
+\renewcommand{\eqref}[1]{(\ref{#1})}
+
+\raggedright
+
+\begin{document}
+\vspace*{-0.45in}
+\begin{center}
+{\Large\centering\bf CARDINAL: A LOWER LENGTH-SCALE MULTIPHYSICS SIMULATOR FOR PEBBLE BED REACTORS}
+\end{center}
+\vspace{3pt}
+
+\normalsize
+
+\section*{Answer to the Reviewers}
+
+We would like to thank the editor and the reviewers for the thoughtful comments provided. We believe the comments helped strengthening the document significantly.  The answer the comments of the reviewers point-by-point in the following.
+
+\subsection*{Editor}
+
+\textbf{Comment 1}. The section headings should use roman numerals for first-level headings (I., II., etc.), capital letters for second-level headings (I.A., I.B., etc.), and numbers for third-level heading (I.A.1, I.A.2, etc.).
+
+\textit{Fixed.}
+
+\textbf{Comment 2}. The Table VII and VIII titles are pretty long. Can any info be moved into the table itself, into a footnote to the table, or into the main body text?
+
+\textit{Fixed, we shortened the titles and incorporated some information in the text.}
+
+Table VII - NekRS GPU/CPU Strong-Scale Timings for 1568-Pebble Case.
+
+Table VIII - NekRS simulation timings on GPU with all-Hex Meshes for Pebble beds. Turbulent Flow Simulations with $Re = 5000$.
+
+\subsection*{First Reviewer}
+
+\textbf{Comment 1}. Pg 1  - “Advanced reactors studied include mmall “
+
+\textit{Fixed.}
+
+\textbf{Comment 2}. Pg 2 “liquid-fluoride0salt “ it looks like this repeats itself, I won’t include further, please double
+check
+
+\textit{Fixed everywhere in the text.}
+
+\textbf{Comment 3}. Pg.8 “and scslar variable transfer “
+
+\textit{Fixed.}
+
+\textbf{Comment 4}. full0core in conclusion
+
+\textit{Fixed.}
+
+\textbf{Comment 5}. What is the justification about the size of the bed in terms of representative behavior of full reactor core TH and neutronics effects? Overall, having higher resolution power profile, how
+much reactivity can add or how much sensitivity are there, those can be good next step
+analysis.
+
+\textit{Thank you for the comment and the suggestion. We added a note in the demo section making clear that the size of the beds are not yet representative of a full core bed, but they represent stepping stones toward a full core capability. The text added is as follows: }
+
+We note that this small-size bed is not representative of the behavior of large pebble beds,
+but it was chosen because of the available of an experimental data set for comparison (at least for the thermal-hydraulics model). It should be seen only as an initial demonstration step, in an effort to scale to larger pebble beds.
+
+\textbf{Comment 6}. “But a small positive temperature reactivity feedback from the inner region and outer graphite pebble region. “ This can be explained further, is it reflector or pebble bed itself or pebble fuel itself
+
+\textit{Thank you for the comment. We agree that the original sentence was not clear. We modified the sentence as follows:}
+
+We note that the Mk1 PB-FHR exhibits strong negative temperature reactivity feedback from the fuel, graphite moderator, and FLiBe coolant, but a small positive temperature reactivity feedback from the inner  and outer graphite reflector pebble regions \cite{cisneros2014technical}.
+
+\textit{More information is provided in } \cite{cisneros2014technical} \textit{. In particular at page 59 of that report (Table 2-3) the temperature reactivity coefficients for the various regions of the reactor are reported.}
+
+\subsection*{Second Reviewer}
+
+\textbf{Major issue 1}.  The low length scale analysis is a part of multiscale modeling that spans from atomistic to engineering scale. We call a low length scale as the physics is using a low length scale when compared with the engineering scale as far as I understand. That is, the low length scale model uses atomic interaction or molecular dynamics to come up with property that can be used for engineering analysis for the material analysis. So, if we use the conventional material property, we can't call it a low length scale analysis. I do remember that some people developed a thermal conductivity model based on low length scale model and used it in BISON code. But, BISON code itself doesn't have the capability to model in a low length scale. Likewise, modeling a TRISO is not a low length scale, but is a fine mesh model. This is the same for the coupling to other thermal-hydraulic and neutronics codes. This issue was found in the title, introduction and conclusion.
+
+\textit{The authors make a very good point. We agree that the original manuscript did not adequately define the meaning of lower-length-scale and, in particular, did not address the difference with the terminology used in the fuel modeling campaign of NEAMS. We addressed this by adding a paragraph in the introduction that better explain our multi-scale approach:}
+
+We note that, despite the analogy in template, motivation and structure,  the individual scales have a markedly different meaning than in materials modeling \cite{tonks2013multiscale}. For example, in the fuel modeling approach adopted in NEAMS, the continuum mechanics modeling of the fuel pellet represents actually the engineering scale, while lower length-scale models refer to atomic interaction or molecular dynamics.
+The thermal-hydraulic multi-scale template described above, however aims at modeling the full power plant, a system that is several orders of magnitude larger than a pellet.  Therefore in the multiscale template of the center of excellence the detailed modeling of the flow structures and related heat transfer  by the means of Computational Fluid Dynamics (CFD) is considered the lower length-scale, while engineering and plant scale adopt various form of homogenization. We also note that, in a multi-physics simulation, CFD will couple with physics that exhibit similar resolution.
+
+\textbf{Major issue 2}.  In section 3.1.3, there is a comparison of DNS and experiment. This is an important result, but there is no backup information. Provide the information on how the flow was measured in the experiment and how the pebbles were modeled for that specific experiment.
+
+\textit{We agree with the reviewer that the original paragraph describing the experiment and simulation results for the TAMU experiment was too brief and rather poorly written. We have expanded that section considerably as follows and provided more descriptive captions to the figures.}
+
+A more recent study was aimed at simulating the flow in a random pebble bed \cite{yildiz2020direct}. This random pebble bed geometry was obtained from an experiment conducted by Nguyen et al. \cite{nguyen2018time}.  The experiment measured detailed velocity distributions using Particle Image Velocimetry (PIV) and matched index of refraction within a pebble bed . A direct numerical simulation of the flow field was then conducted for a short section of the bed comprising 147 pebbles, corresponding to the test section and additional layers of pebbles. The pebble locations were obtained from the experimental facility by using a combination of particle image velocimetry and image recognition algorithms.
+
+To create a pure hexahedral mesh for a random pebble bed is challenging using the traditional blocking method. With the \textit{tet-to-hex} meshing method, however, we created a pure hexahedral mesh for this geometry. In order to reduce the total element count, chamfers are created at pebble-pebble interfaces. As discussed, the computational domain is only a small section of the whole experimental domain; therefore, we applied periodic boundary conditions at the inlet/outlet to mimic the upstream/downstream.
+
+Figure 13 shows selected results of velocity field in the random pebble bed. The flow field is complex because of the randomly distributed pebbles. Note that some pebbles may appear smaller, but this is an effect of the plane cutting through the bed. Figure 14 shows a comparison of experimental and simulation results at two flow Reynolds numbers. Despite the complexity of the geometry, the computational results compared favorably. More in-depth analysis of the results is provided in \cite{yildiz2020direct}.
+
+\textit{The captions have been modified to: }
+
+Figure 13 - Simulation results for the TAMU experiment. Velocity magnitude. (top) cross section at $y=1.0$, (bottom) 3D contour plot.
+
+Figure 14 - TAMU experiment. Comparison of simulation with experiment in a plan normal to the streamwise direction at two Reynolds numbers.
+
+\textbf{Additional comments}.  The reviewer provided very useful editorial comments in the form of pdf comments. The reviewer also provided additional questions that are addressed in the following.
+
+\textbf{1.} Editorial comments (see original review).
+
+\textit{All editorial comments have been accepted and incorporated.}
+
+\textbf{2.} Pg. 5 of review document provided - add a brief description of LES. Why LES?
+
+\textit{Thank you for the comment. We added the following:}
+
+We note that fine-scale CFD simulations have been attempted before (e.g., \cite{vanstaden2018}) but not for large-scale beds using large eddy simulation (LES).  In contrast to commonly used  Reynolds Averaged Navier-Stokes (RANS) methods, LES and Direct Numerical Simulation (DNS) provide a much lesser degree of modeling uncertainty, and they can provide valuable and unprecedented insight into the flow physics. In fact, in LES a broad range of scales of motions associated to turbulence are resolved rather than being modeled. This work represents the most extensive collection of LES ever attempted for random pebble beds.
+
+\textbf{3.} Pg. 5 of review document provided - Are these low length scale codes?
+
+\textit{See answer to Major issue 1.}
+
+\textbf{4.} Pg. 8 of review document provided - how? is there any limitation in terms of format type, size, etc?
+
+\textit{Thank you for the answer. The Transfer “system” within MOOSE is a pluggable system allowing for a whole spectrum of transfer capabilities to be added either to the framework or to applications.  A wide range of Transfer objects are already built-in to MOOSE, which allow for transferring between fields, reduced values (average, min, max, etc.), scales, etc., and also allow for interpolations over time.  These Transfer objects can move any value MOOSE is capable of storing between any two applications in a MultiApp hierarchy.  For external applications, once MOOSE has transferred values to it, the MOOSE-wrapper for that application then takes on the final step of moving the data from MOOSE data structures into the external application.  For more information, and some examples, please see  Gaston, Derek R., et al. "Physics-based multiscale coupling for full core nuclear reactor simulation." Annals of Nuclear Energy 84 (2015): 45-54. We modified the text as follows:}
+
+ To address this issue the MWA system utilizes an ExternalMesh that is created to be compatible with the third-party application. Fields/values can then be easily moved to the ExternalProblem  that uses the ExternalMesh. Built-in MOOSE transfers can communicate values with any other MOOSE/non-MOOSE application in the MultiApp hierarchy.  Examples of data that can be transferred include: fields, reduced values (average, min, max, etc.) and parameters.
+
+\textbf{5.} Pg. 21 of review document provided - what's the problem if there is no clearance? How much of clearance is required?
+
+\textit{We thank the reviewer for the thoughtful comment. We agree that the sentence was not clear. We revised the paragraph as follows}
+
+The mesh was constructed using the tet-to-hex approach and comprises approximately 500,000 elements overall. It is designed to run at $N=5$ for coarse results and $N=7$ for finer simulations (for a max of 256 million grid points). The mesh is also designed to allow for a small $0.01D$ clearance between pebbles, where $D$ is the diameter. This design facilitates the demonstration simulation, but it will likely be updated in future simulations with more realistic contact models. We note that the mesh for the TAMU experiment simulations discussed in Section III assumes area contact between pebbles, and no significant differences on the flow field between the two approaches were observed. The difference between the two meshes is outlined in Figure 16.
+
+\textbf{6.} Pg. 26 of review document provided - It is unclear how the authors defined the multiscale. This is also related to Fig. 1. Fuel particle model is also an engineering scale modeling. When we
+say multiscale it ranges from the low length to engineering scale, where the low length is either atomic or molecular scale.
+
+\textit{See response to Major issue 1.}
+
+%\bibliographystyle{ieeetr}
+\bibliographystyle{nureth18new}
+%\bibliographystyle{ans}
+%\bibliographystyle{plainnat}
+%\bibliographystyle{abbrv}
+\bibliography{references}
+%\bibliographystyle{abbrv}
+
+
+
+
+\end{document}

@@ -50,7 +50,7 @@ While MultiApps create trees of executing applications, transfers are needed to 
 %  \item Postprocessor transfer
 %  \item Scalar Variable transfer
 %\end{itemize}
-Consistent data transfers between dissimilar applications pose challenges for massively parallel code execution.  The MWA system utilizes an ExternalMesh that is created to be compatible with the third-party application to address this issue. Fields/values can then be easily moved to the ExternalProblem (fields) that uses the ExternalMesh. Built-in MOOSE transfers can communicate those values with any other MOOSE/non-MOOSE application in the MultiApp hierarchy.  Examples of data that can be transferred include: fields, reduced values (average, min, max, etc.) and parameters.  A schematic describing the solution transfer is shown in Figure~\ref{f:moose2}.
+Consistent data transfers between dissimilar applications pose challenges for massively parallel code execution.  To address this issue the MWA system utilizes an ExternalMesh that is created to be compatible with the third-party application. Fields/values can then be easily moved to the ExternalProblem  that uses the ExternalMesh. Built-in MOOSE transfers can communicate values with any other MOOSE/non-MOOSE application in the MultiApp hierarchy.  Examples of data that can be transferred include: fields, reduced values (average, min, max, etc.) and parameters.  A schematic describing the solution transfer is shown in Figure~\ref{f:moose2}.
 
 \begin{figure}[!h]
 \centering

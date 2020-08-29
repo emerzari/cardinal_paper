@@ -15,7 +15,7 @@ Nek5000 reflects the practices used for the TAMU experiment, which were
 validated carefully against experimental PIV data. Inlet/outlet boundary
 conditions are used (Figure~\ref{f:pb2}). We assume constant properties.
 
-The mesh was constructed using the tet-to-hex approach and comprises approximately 500,000 elements overall. It is designed to run at $N=5$ for coarse results and $N=7$ for finer simulations (for a max of 256 million grid points). The mesh is also designed to allow for a small $0.01D$ clearance between pebbles, where $D$ is the diameter. This design facilitates the demonstration simulation, but it will likely be updated in future simulations with more realistic contact models. We note that the mesh for the TAMU experiment simulations discussed in Section~\ref{ss:c3} assumes area contact between pebbles, and no significant differences on the flow field were observed. The difference between the two meshes is outlined in Figure~\ref{f:pb2}.
+The mesh was constructed using the tet-to-hex approach and comprises approximately 500,000 elements overall. It is designed to run at $N=5$ for coarse results and $N=7$ for finer simulations (for a max of 256 million grid points). The mesh is also designed to allow for a small $0.01D$ clearance between pebbles, where $D$ is the diameter. This design facilitates the demonstration simulation, but it will likely be updated in future simulations with more realistic contact models. We note that the mesh for the TAMU experiment simulations discussed in Section~\ref{ss:c3} assumes area contact between pebbles, and no significant differences on the flow field between the two approaches were observed. The difference between the two meshes is outlined in Figure~\ref{f:pb2}.
 
 We note that this small-size bed is not representative of the behavior of large pebble beds,
 but it was chosen because of the available of an experimental data set for comparison (at least for the thermal-hydraulics model). It should be seen only as an initial demonstration step, in an effort to scale to larger pebble beds.
@@ -114,9 +114,7 @@ turbulent flow simulations with the 1568-pebble mesh on ORNL's Summit, using 42
 MPI ranks per node for the CPU runs and 6 Nvidia V100s per node for the GPU
 runs.  For the same node count, the GPU-accelerated variant of NekRS is more
 than 9$\times$ faster when using 3.5 million points per GPU (here, 7283
-spectral elements per GPU and $N=7$).  The NekRS GPU run realizes 82\%
-parallel efficiency at 2.1 million points per GPU.
-
+spectral elements per GPU and $N=7$). The Total Number of Grid Points is $n=179,864,398$ ($E=524,386$ and $N=7$). The NekRS GPU run realizes 82\% parallel efficiency at 2.1 million points per GPU.
 
 \begin{table}
   \centering
@@ -138,8 +136,7 @@ parallel efficiency at 2.1 million points per GPU.
     52 & 1680 & 0.5M & 0.255 & 0.51 & 240 & 82K & 1.204  & 1.02\\
     \hline \hline
   \end{tabular}
-  \caption{NekRS GPU/CPU Strong-Scale Timings (seconds per step) for 100 Steps of Turbulent flow Simulations
-   with $Re=10000$ for 1568-Pebble Case Using Total Number of Grid Points $n=179,864,398$ ($E=524,386$ and $N=7$).}
+  \caption{NekRS GPU/CPU Strong-Scale Timings for 1568-Pebble Case.}
   \label{tab:nekrs}
 \end{table}
 
@@ -248,7 +245,6 @@ We note that in addition to the cases presented here, additional NekRS cases hav
 
      \hline \hline
    \end{tabular}
-   \caption{NekRS: All-Hex Meshes for Pebbles, Based on Voronoi Cell strategy, and Simulation Timings (seconds per step) on GPUs
-    of Turbulent Flow Simulations with $Re = 5000$.}
+   \caption{NekRS simulation timings on GPU with all-Hex Meshes for pebbles beds. Turbulent Flow Simulations with $Re = 5000$.}
    \label{tab:pebble}
  \end{table}
