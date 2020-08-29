@@ -48,21 +48,25 @@ Figure~\ref{f:nrs2} presents single-pebble results in Cardinal  where the fluid 
 
 \subsubsection{Pebble beds}
 
-Over the past several years, NEAMS has dedicated several efforts to the modeling and simulation of the detailed flow in a pebble bed. For instance, Fick et al. \cite{fick2017direct}  performed a complete direct numerical simulation of pebble bed flow. Complete statistical data was obtained from this DNS study, with an investigation of low-frequency temporal instabilities. However, Fick's study \cite{fick2017direct} used a structured pebble bed, which limits its application. Nonetheless, it was compared against other available DNS data and proved that Nek5000 can deliver high-quality simulation data for pebble beds. A more recent study was aimed at simulating the flow in a random pebble bed \cite{yildiz2020direct}. This random pebble bed geometry was obtained from an experiment conducted by Nguyen et al. \cite{nguyen2018time}. However, only a small section of the whole domain from the experiment was studied.
+Over the past several years, NEAMS has dedicated several efforts to the modeling and simulation of the detailed flow in a pebble bed. For instance, Fick et al. \cite{fick2017direct}  performed a complete direct numerical simulation of pebble bed flow. Complete statistical data was obtained from this DNS study, with an investigation of low-frequency temporal instabilities. However, Fick's study \cite{fick2017direct} used a structured pebble bed, which limits its application. Nonetheless, it was compared against other available DNS data and proved that Nek5000 can deliver high-quality simulation data for pebble beds.
 
-To create a pure hexahedral mesh for a random pebble bed is challenging using the traditional blocking method. With the tet-to-hex meshing method, however, we can create a pure hexahedral mesh for this geometry. In order to reduce the total element count, chamfers are created at pebble-pebble interfaces. As discussed, the computational domain is only a small section of the whole experimental domain; therefore, we applied periodic boundary conditions at the inlet/outlet to mimic the upstream/downstream. Figure~\ref{f:tamu3} shows the instantaneous velocity field at cross sections of the random pebble bed and the near-wall mesh at the pebble surface. In Figure~\ref{f:tamu4}, the flow field is complex because of the randomly distributed pebbles. Despite the complexity of the geometry, the computational results compared favorably.
+A more recent study was aimed at simulating the flow in a random pebble bed \cite{yildiz2020direct}. This random pebble bed geometry was obtained from an experiment conducted by Nguyen et al. \cite{nguyen2018time}.  The experiment measured detailed velocity distributions using Particle Image Velocimetry (PIV) and matched index of refraction within a pebble bed . A direct numerical simulation of the flow field was then conducted for a short section of the bed comprising 147 pebbles, corresponding to the test section and additional layers of pebbles. The pebble locations were obtained from the experimental facility by using a combination of particle image velocimetry and image recognition algorithms.
+
+To create a pure hexahedral mesh for a random pebble bed is challenging using the traditional blocking method. With the \textit{tet-to-hex} meshing method, however, we created a pure hexahedral mesh for this geometry. In order to reduce the total element count, chamfers are created at pebble-pebble interfaces. As discussed, the computational domain is only a small section of the whole experimental domain; therefore, we applied periodic boundary conditions at the inlet/outlet to mimic the upstream/downstream.
+
+Figure~\ref{f:tamu3} shows selected results of velocity field in the random pebble bed. The flow field is complex because of the randomly distributed pebbles. Note that some pebbles may appear smaller, but this is an effect of the plane cutting through the bed. Figure~\ref{f:tamu4} shows a comparison of experimental and simulation results at two flow Reynolds numbers. Despite the complexity of the geometry, the computational results compared favorably. More in-depth analysis of the results is provided in \cite{yildiz2020direct}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[clip=true,width=0.9\textwidth]{Figures/pb_tamu3}
-\caption{TAMU experiment -- Simulation results.}
+\caption{Simulation results for the TAMU experiment. Velocity magnitude. (top) cross section at $y=1.0$, (bottom) 3D contour plot. }
 \label{f:tamu3}
 \end{figure}
 
 \begin{figure}[!h]
 \centering
 \includegraphics[clip=true,width=0.9\textwidth]{Figures/pb_tamu4}
-\caption{TAMU experiment -- Comparison with experiment. }
+\caption{TAMU experiment. Comparison of simulation with experiment in a plan normal to the streamwise direction at two Reynolds numbers. }
 \label{f:tamu4}
 \end{figure}
 
