@@ -1,10 +1,10 @@
 \section{Cardinal}
 \label{s:cardinal}
 
-MOOSE was initially developed for solving fully coupled systems of partial
-differential equations (PDEs) using fully implicit timestepping. To utilize
+MOOSE was initially developed for solving fully coupled systems of Partial
+Differential Equations (PDEs) using fully implicit timestepping. To utilize
 MOOSE, developers create small C++ objects representing their PDEs, boundary
-conditions, initial conditions, and so forth. MOOSE then coordinates PETSc and
+conditions, initial conditions, etc. MOOSE then coordinates PETSc and
 libMesh \cite{kirk2006libmesh} to perform a Newton solve over all of the
 physics to find the solution to the multiphysics problem. While this is still
 the primary way to use MOOSE, the library has also gained capability for
@@ -66,8 +66,8 @@ timestep (typically).
 \item Tightly coupled / Picard: each physics solved with a separate linear/nonlinear solve. Data is exchanged, and physics re-solved until convergence.
 \item Fully coupled: all physics solved for in one linear/nonlinear solve.
 \end{itemize}
-These three options are depicted in Figure~\ref{f:moose3}. The top coupling represents a one-way loose coupling where, in each timestep, one physics is solved, and the solution is passed to the next physics solver. The other physics is then solved, and time marches forward. The second coupling utilizes Picard iteration to converge the two physics within each timestep. The final coupling method, the one originally utilized by MOOSE, is full coupling: all PDEs within the system are solved simultaneously, resulting in a completely converged solution within one solve. While fully coupled simulation has many advantages when physics are interdependent, it can be
-overly burdensome for more loosely coupled physical systems. Therefore, utilization of the MultiApp and transfer systems for loose coupling and Picard iteration can be useful for multiscale solves, solves involving multiple timescales, and solves utilizing external applications. The Cardinal application developed for lower length scale simulation of FHRs utilizes MultiApps for just this purpose: coupling Nek5000, OpenMC, and BISON.
+These three options are depicted in Figure~\ref{f:moose3}. The top coupling represents a one-way loose coupling where, in each timestep, one physics is solved, and the solution is passed to the next physics solver. The other physics is then solved, and time marches forward. The second coupling utilizes Picard iteration to converge the two physics within each timestep. The final coupling method, the one originally utilized by MOOSE, is full coupling: all PDEs within the system are solved simultaneously, resulting in a completely converged solution within one solve. While a fully coupled simulation has many advantages when physics are interdependent, it can be
+overly burdensome for loosely coupled physical systems. Therefore, utilization of the MultiApp and transfer systems for loose coupling and Picard iteration can be useful for multiscale solves, solves involving multiple timescales, and solves utilizing external applications. The Cardinal application developed for lower length scale simulation of FHRs utilizes MultiApps for just this purpose: coupling Nek5000, OpenMC, and BISON.
 
 \begin{figure}[!h]
 \centering
@@ -219,7 +219,7 @@ Volumes called half-spaces are bounded by quadratic surfaces, which are defined 
 Previous efforts have attempted to couple OpenMC to MOOSE for LWR applications \cite{ellis2017preliminary}.
 However, the current effort takes a new approach. In particular, we have implemented two options:
 \begin{itemize}
-    \item \textbf{A cell-based API.}.  We leverage MOOSE Wrapped-Apps features to develop a specialized interface for the PBR problem. To transfer temperature from BISON to OpenMC, we must update the temperature of an OpenMC cell, which updates the temperature of each material in the cell. Heat sources are also tallied on each pebble and transferred to BISON.
+    \item \textbf{A cell-based API.}  We leverage MOOSE Wrapped-Apps features to develop a specialized interface for the PBR problem. To transfer temperature from BISON to OpenMC, we must update the temperature of an OpenMC cell, which updates the temperature of each material in the cell. Heat sources are also tallied on each pebble and transferred to BISON.
     \item \textbf{A mesh-tally API}.
 \end{itemize}
 
@@ -234,7 +234,7 @@ As summarized in \autoref{eq:heat_source_normalization}, the energy deposition f
 
 This results in a single average heating value for the entire pebble. Before being transferred to the MOOSE mesh, these values are normalized by the total heat.
 
-For improved spatial resolution of heat generation in the pebble bed, unstructured mesh tallies have been implemented in OpenMC. \autoref{fig:pebble_umesh} provides an example of this capability applied to a single pebble. The unstructured mesh representation relies on a LibMesh mesh instance and currently conforms to the OpenMC tally data model that separates the mesh structured from the tally data itself. The separation of this information allows the unstructured mesh to be applied in a mesh filter object that is agnostic to the underlying mesh type. The mesh filter can then be combined with other specified filters, scores, and nuclides in a tally and can be used in one or more tally definitions. Calls into the LibMesh library from OpenMC are agnostic to the type of elements used, so meshes can be formed by using any element type supported by LibMesh.
+For improved spatial resolution of heat generation in the pebble bed, unstructured mesh tallies have been implemented in OpenMC. \autoref{fig:pebble_umesh} provides an example of this capability applied to a single pebble. The unstructured mesh representation relies on a LibMesh mesh instance and currently conforms to the OpenMC tally data model that separates the mesh structure from the tally data. The separation of this information allows the unstructured mesh to be applied in a mesh filter object that is agnostic to the underlying mesh type. The mesh filter can then be combined with other specified filters, scores, and nuclides in a tally and can be used in one or more tally definitions. Calls into the LibMesh library from OpenMC are agnostic to the type of elements used, so meshes can be formed by using any element type supported by LibMesh.
 
 \begin{figure}
     \centering
