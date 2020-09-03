@@ -27,7 +27,7 @@ The MultiApp system within MOOSE allows for arbitrary-depth, hierarchical execut
 \end{figure}
 
 
-Critical to Cardinal is that a MultiApp can hold non-MOOSE-based (``external'')
+A key feature of MOOSE to Cardinal is that a MultiApp can hold non-MOOSE-based (``external'')
 applications. This is possible using the Moose-Wrapped-App (MWA) interfaces. By
 creating a few objects that wrap an external app and present it to MOOSE as a
 MOOSE-based application, that external application can then be placed into any
@@ -214,7 +214,7 @@ simulation and individual batches) and for accessing underlying data structures 
 tally data) during online coupling.
 
 Like several other MC transport simulators (such as MCNP), OpenMC uses constructive solid geometry (CSG) to build models in Euclidean space.
-Volumes called half-spaces are bounded by quadratic surfaces, which are defined by parameterized equations, not gridpoints. A given surface defines a positive and negative half-space, and Boolean combinations (intersections, unions, and differences) of these half-spaces can form arbitrarily complex volumes. In OpenMC, a Boolean combination of arbitrarily many half-spaces describes a volume called a cell. Moreover, in OpenMC, each cell contains one or more materials; each material in turn contains information about nuclide identities, nuclide atom densities, and overall material density. Each cell also contains temperature information; note that temperature information is not associated with the material itself.
+Volumes, also referred to as cells, are bounded by quadratic surfaces, which are defined by parameterized equations, not gridpoints. A given surface defines a positive and negative half-space, and Boolean combinations (intersections, unions, and differences) of these half-spaces can form arbitrarily complex volumes. Moreover, in OpenMC, each cell contains one or more materials; each material in turn contains information about nuclide identities, nuclide atom densities, and overall material density. Each cell also contains temperature information; note that temperature information is not associated with the material. Instead, temperature information is associated with cells to provide a spatial distribution of this property.
 
 Previous efforts have attempted to couple OpenMC to MOOSE for LWR applications \cite{ellis2017preliminary}.
 However, the current effort takes a new approach. In particular, we have implemented two options:
@@ -245,7 +245,7 @@ For improved spatial resolution of heat generation in the pebble bed, unstructur
     \label{fig:pebble_umesh}
 \end{figure}
 
-A mesh for each pebble is applied in the Cardinal problem to capture the heat generation distribution throughout the pebble bed. In order to avoid replicating a mesh representing all of the pebbles from either MOOSE or NekRS, the addition of translations to mesh filters was introduced in OpenMC. Placing the translation at this layer of the tally model allows all tallies to rely on a single LibMesh mesh instance acting as a template to represent any pebble in the bed, as shown in \autoref{fig:umesh_tally_steup}. This results in a minimal memory footprint for the tally, even tallying energy deposition for an entire pebble bed.
+A mesh for each pebble is applied in the Cardinal problem to capture the heat generation distribution throughout the pebble bed. In order to avoid replicating a mesh representing all of the pebbles from either MOOSE or NekRS, the addition of translations to mesh filters was introduced in OpenMC. Placing the translation at this layer of the tally model allows all tallies to rely on a single LibMesh mesh instance acting as a template to represent any pebble in the bed, as shown in \autoref{fig:umesh_tally_steup}. This results in a minimal memory footprint even when tallying energy deposition for an entire pebble bed. The translation values for each mesh filter are set using the list of pebble centers provided in the MOOSE input file. During problem initialization, these translations are used to calculate the location of element centers in the MOOSE mesh when transferring heat generation values to MOOSE.
 
 \begin{figure}[ht]
     \centering
@@ -254,7 +254,6 @@ A mesh for each pebble is applied in the Cardinal problem to capture the heat ge
     \label{fig:umesh_tally_steup}
 \end{figure}
 
-The translation values for each mesh filter are set using the list of pebble centers provided in the MOOSE input file. During problem initialization, these translations are used to calculate the location of element centers in the MOOSE mesh when transferring heat generation values to MOOSE.
 % Element volumes can be determined directly from the
 
 Temperature values from MOOSE are updated in OpenMC by using an average temperature value at the pebble center. An option has been added in OpenMC to automatically update the temperature value of all cells inside a pebble to simplify this process.

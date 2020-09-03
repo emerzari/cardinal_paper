@@ -15,7 +15,7 @@ Nek5000 reflects the practices used for the TAMU experiment, which were
 validated carefully against experimental PIV data. Inlet/outlet boundary
 conditions are used (Figure~\ref{f:pb2}). We assume constant properties.
 
-The mesh was constructed using the tet-to-hex approach and comprises approximately 500,000 elements overall. It is designed to run at $N=5$ for coarse results and $N=7$ for finer simulations (for a max of 256 million grid points). The mesh is also designed to allow for a small $0.01D$ clearance between pebbles, where $D$ is the diameter. This design facilitates the demonstration simulation, but it will likely be updated in future simulations with more realistic contact models. We note that the mesh for the TAMU experiment simulations discussed in Section~\ref{ss:c3} assumes area contact between pebbles, and no significant differences on the flow field between the two approaches were observed. The difference between the two meshes is outlined in Figure~\ref{f:pb2}.
+The mesh was constructed using the tet-to-hex approach and comprises approximately 500,000 elements overall. It is designed to run at $N=5$ for coarse results and $N=7$ for finer simulations (for a max of 256 million grid points). The mesh is also designed to allow for a small clearance between pebbles equal to 1\% of the pebble diameter. This design facilitates the demonstration simulation, but it will likely be updated in future simulations with more realistic contact models. We note that the mesh for the TAMU experiment simulations discussed in Section~\ref{ss:c3} assumes area contact between pebbles, and no significant differences on the flow field between the two approaches were observed. The difference between the two meshes is outlined in Figure~\ref{f:pb2}.
 
 We note that this small-size bed is not representative of the behavior of large pebble beds,
 but it was chosen because of the available of an experimental data set for comparison (at least for the thermal-hydraulics model). It should be seen only as an initial demonstration step, in an effort to scale to larger pebble beds.
@@ -58,7 +58,7 @@ For the coupled simulations, we opted to tightly couple Nek5000 and BISON and lo
 \begin{itemize}
   \item The effect of the complex flow field on the surface temperature of the pebbles.
   \item A slight tilt in the temperature distribution in the fuel's interior due to the outer temperature condition of each pebble.
-  \item The effect of the reflective boundary conditions on the power distribution and a slight power tilt toward the bottom due to the colder coolant.
+  \item The effect of the reflective boundary conditions on the power distribution and a slight power tilt toward the bottom of the bed due to the colder coolant.
 \end{itemize}
 
 \begin{figure}[!h]
@@ -97,7 +97,7 @@ representative of the SANA experiments \cite{zou2017validation}, for instance.
 \end{figure}
 
 For this demonstration, the sizes and composition of the TRISO particles were
-based on TRISO manufactured at INL, following the practice established in the
+based on those manufactured at INL, following the practice established in the
 validation section. Although these particles were developed for the AGR fuel,
 particles with the same specifications are used for FHR test reactors and
 computation benchmarks. The sizes and compositions of the pebbles were taken
@@ -184,15 +184,15 @@ batch were used to converge the pebble-averaged heat source from the OpenMC cell
 tally while the unstructured mesh heat source tally required 500,000 particles
 per batch to produce the heat source presented here. Production simulations may
 require an even higher number of particles per batch to more tightly converge
-the heating distribution when using the unstructured mesh heat source because of the
-decreased number of samples per source particle in the tally bins.
+the heating distribution when using the unstructured mesh heat source due to the
+decreased number of samples per source particle in the smaller tally bins.
 Figure~\ref{f:1568_openmc_temperatures_single_pebble} demonstrates the effect of
 the improved spatial resolution provided by the unstructured mesh heat source
 from OpenMC on the temperature distribution within a representative pebble. In
 the case of the pebble-averaged heat source the temperature profile is
-symmetric, reflecting the uniform heat source applied in that region, while an
+symmetric, reflecting the uniform heat source applied in that region. In contrast, a clear
 asymmetry can be seen in the profile generated from the unstructured mesh heat
-source, indicating that the improved spatial resolution of the source has an
+source indicating that the improved spatial resolution of the heat source has an
 impact on the temperature distribution in the solid and will in turn affect the
 resulting heat transfer to the fluid.
 
