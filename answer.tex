@@ -144,6 +144,27 @@ We note that the Mk1 PB-FHR exhibits strong negative temperature reactivity feed
 
 \textit{More information is provided in } \cite{cisneros2014technical} \textit{. In particular at page 59 of that report (Table 2-3) the temperature reactivity coefficients for the various regions of the reactor are reported.}
 
+\textbf{Comment 7}. As a reviewer, I was interested to see original development efforts of Cardinal. However, I could not
+access to reference 19 by any means, It would be much beneficial to include accessible reference for
+reader.
+
+\textit{We updated references which are, or will be shortly, available on osti.gov.}
+
+\textbf{Comment 8}. “Temperature values from MOOSE are updated in OpenMC by using an average temperature value
+at the pebble center. An option has been added in OpenMC to automatically update the temperature
+value of all cells inside a pebble to simplify this process. “
+For steady-state approach this is fine, but there are certain safety cases such as rod withdrawal accidents requires TRISO level exchanges.
+
+\textit{We thank the reviewer for this comment and we will consider for future analysis. As indicated in the conclusions, TRISO level exchanges are planned in future iterations of Cardinal.}
+
+\textbf{Comment 9}. Table V stating relative error on table missing
+
+\textit{Thanks. This has been fixed.}
+
+\textbf{Comment 10}. Fig.17 view angle of individual figures is different than each other.
+
+\textit{This was done on purpose to facilitate a visualization of the coupling effect.}
+
 \subsection*{Second Reviewer}
 
 \textbf{Major issue 1}.  The low length scale analysis is a part of multiscale modeling that spans from atomistic to engineering scale. We call a low length scale as the physics is using a low length scale when compared with the engineering scale as far as I understand. That is, the low length scale model uses atomic interaction or molecular dynamics to come up with property that can be used for engineering analysis for the material analysis. So, if we use the conventional material property, we can't call it a low length scale analysis. I do remember that some people developed a thermal conductivity model based on low length scale model and used it in BISON code. But, BISON code itself doesn't have the capability to model in a low length scale. Likewise, modeling a TRISO is not a low length scale, but is a fine mesh model. This is the same for the coupling to other thermal-hydraulic and neutronics codes. This issue was found in the title, introduction and conclusion.
